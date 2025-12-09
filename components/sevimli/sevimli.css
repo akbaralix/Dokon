@@ -1,0 +1,106 @@
+.empty-page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-width: 490px;
+  width: 100%;
+  margin: 70px auto;
+  text-align: center;
+}
+.empty-page_img {
+  width: 130px;
+}
+.empty-page_title {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+}
+.empty-page_text {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 22px;
+  text-decoration: none;
+  margin-top: 10px;
+}
+/*  */
+
+.favorites-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.8rem;
+  margin: 10px;
+  margin-bottom: 80px;
+}
+.product-card {
+  position: relative;
+  /* width: 230px; */
+}
+
+.image-wrapper {
+  height: 340px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  transition: 0.3s ease;
+}
+.image-wrapper img:hover {
+  transform: scale(1.04);
+}
+.product-card__price .card-price {
+  color: #7f4dff;
+  font-size: 16px;
+  font-weight: 600;
+}
+.product-card__title {
+  font-size: 13px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  line-height: 16px;
+}
+.card-button {
+  width: 100%;
+  padding: 6px;
+  border-radius: 8px;
+  background-color: #5619ee;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.product-card__cart button:hover {
+  background-color: #7345e7;
+}
+.card-button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 16px;
+}
+.product-card__actions {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 12px;
+  right: 12px;
+  font-size: 25px;
+  background-color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+}
+.product-card__actions button {
+  cursor: pointer;
+}
+@media (max-width: 750px) {
+  .favorites-products {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  }
+  .image-wrapper {
+    height: 270px;
+  }
+}

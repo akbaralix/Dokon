@@ -1,5 +1,10 @@
 .page-container {
   margin: 0 auto;
   max-width: 1240px;
-  padding: 0 10px; /* yonlari zich chiqmasligi uchun */
+  padding: 0 20px;
+}
+@media (max-width: 750px) {
+  .page-container {
+    padding: 0 10px;
+  }
 }

@@ -3,10 +3,12 @@ import "./home.css";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import { CiHeart } from "react-icons/ci";
 import { TbBasketHeart } from "react-icons/tb";
+import Sevimli from "../sevimli/sevimli";
 
 function Home() {
-  const mahsulotlar = [
+  const [mahsulotlar, setMasulotlar] = useState([
     {
+      id: 1,
       narx: 120000,
       title:
         "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
@@ -14,6 +16,7 @@ function Home() {
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
+      id: 2,
       narx: 120000,
       title:
         "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
@@ -21,6 +24,7 @@ function Home() {
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
+      id: 3,
       narx: 120000,
       title:
         "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
@@ -28,6 +32,7 @@ function Home() {
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
+      id: 4,
       narx: 120000,
       title:
         "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
@@ -35,6 +40,7 @@ function Home() {
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
+      id: 5,
       narx: 120000,
       title:
         "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
@@ -42,16 +48,17 @@ function Home() {
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
+      id: 6,
       narx: 120000,
       title:
         "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
       rasmi:
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
-  ];
+  ]);
   const bannerImg = [
     "https://images.uzum.uz/d4n0q5uj76olj6nfdlvg/main_page_banner.jpg",
-    "https://images.uzum.uz/d4n0q5uj76olj6nfdlvg/main_page_banner.jpg",
+    "https://images.uzum.uz/d4rs90rtqdhgicat6beg/main_page_banner.jpg",
     "https://images.uzum.uz/cvcg2f3vgbkm5ehkika0/main_page_banner.jpg",
   ];
   const [current, setCurrent] = useState(0);
@@ -62,26 +69,42 @@ function Home() {
     }, 8000);
     return () => clearInterval(interval);
   }, []);
+
+  const [favorites, setFavorites] = useState([]);
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("favorites")) || [];
+    setFavorites(stored);
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+  const toggleFavorite = (product) => {
+    if (favorites.find((item) => item.id === product.id)) {
+      setFavorites(favorites.filter((item) => item.id !== product.id));
+    } else {
+      setFavorites([...favorites, product]);
+    }
+  };
   return (
     <div>
       <div className="banner-block">
         <div className="banner-navigation">
-          <div
+          <button
             className="slider-button prev"
             onClick={() => {
               setCurrent(current === 0 ? bannerImg.length - 1 : current - 1);
             }}
           >
             <GrPrevious />
-          </div>
-          <div
+          </button>
+          <button
             className="slider-button next"
             onClick={() => {
               setCurrent(current === bannerImg.length - 1 ? 0 : current + 1);
             }}
           >
             <GrNext />
-          </div>
+          </button>
         </div>
         <div className="banner-img">
           <img src={bannerImg[current]} alt="" />
@@ -135,13 +158,17 @@ function Home() {
         </span>
       </div>
       <div className="products">
-        {mahsulotlar.map((m) => {
+        {mahsulotlar.map((m, index) => {
+          const isFav = favorites.find((item) => item.id === m.id);
           return (
-            <div className="product-card">
+            <div className="product-card" key={index}>
               <div className="image-wrapper">
                 <img src={m.rasmi} alt="" />
                 <div className="product-card__actions">
-                  <button>
+                  <button
+                    onClick={() => toggleFavorite(m)}
+                    style={{ color: isFav ? "red" : "gray" }}
+                  >
                     <CiHeart />
                   </button>
                 </div>

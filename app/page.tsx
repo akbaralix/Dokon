@@ -1,14 +1,14 @@
 "use client";
 import "./globals.css";
 import "./page.css";
-import Login from "../components/login/login";
 import Home from "../components/home/home";
 import Navbar from "../components/navbar/navbar";
+import Sevimli from "../components/sevimli/sevimli";
+import Login from "../components/login/login";
 
 function Page() {
   return (
     <div className="page-container">
-      <Navbar />
       <Home />
     </div>
   );
