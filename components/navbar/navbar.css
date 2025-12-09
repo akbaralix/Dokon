@@ -1,0 +1,54 @@
+:root {
+  --gap-nav: 0.4rem;
+  --padding-nav: ;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.3rem 0;
+}
+.store-action-buttons {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  gap: 22px;
+}
+.store-action-buttons a {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-nav);
+}
+.input-line {
+  display: flex;
+  align-items: center;
+  width: 400px;
+  border: 1px solid white;
+}
+.input-line input {
+  height: 40px;
+  padding: 0 0.9rem;
+  width: 100%;
+  outline: none;
+}
+.button__search {
+  font-size: 2rem;
+  height: 40px;
+  width: 80px;
+  background-color: rgb(28, 27, 27);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+@media (max-width: 1000px) {
+  .navbar {
+    flex-direction: column;
+  }
+  .store-action-buttons {
+    font-size: 23px;
+  }
+  .store-actions-item {
+    display: none;
+  }
+}
