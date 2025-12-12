@@ -35,7 +35,10 @@ const Profil = () => {
     if (!token) return;
 
     const payload = parseJwt(token);
-    if (!payload) return;
+    if (!payload || !payload.telegramId) {
+      window.location.href = "/login";
+      return;
+    }
 
     const telegramId = payload.telegramId;
     if (!telegramId) return;
@@ -46,20 +49,20 @@ const Profil = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  if (!user) window.location.href = "./login";
-  return (
-    <div className="loader-container">
-      <div className="loader">
-        <div className="avatar-loader"></div>
-        <div className="user-title_loader"></div>
+  if (!user)
+    return (
+      <div className="loader-container">
+        <div className="loader">
+          <div className="avatar-loader"></div>
+          <div className="user-title_loader"></div>
+        </div>
+        <div className="order-continer_loader">
+          <div className="order-container_title"></div>
+          <div className="order-continer_discription"></div>
+          <div className="order-continer_btn"></div>
+        </div>
       </div>
-      <div className="order-continer_loader">
-        <div className="order-container_title"></div>
-        <div className="order-continer_discription"></div>
-        <div className="order-continer_btn"></div>
-      </div>
-    </div>
-  );
+    );
 
   return (
     <div className="user-profil">
