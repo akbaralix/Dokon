@@ -27,14 +27,17 @@
 
 .favorites-products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 0.8rem;
-  margin: 10px;
-  margin-bottom: 80px;
+  padding: 10px;
+  width: 100%;
+  justify-items: center;
 }
-.product-card {
+
+.product-card_sevimli {
   position: relative;
-  /* width: 230px; */
+  max-width: 230px;
+  width: 100%;
 }
 
 .image-wrapper {

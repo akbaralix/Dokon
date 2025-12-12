@@ -29,8 +29,24 @@
   border: none;
   transition: 0.2s ease;
 }
+.login-title {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  gap: 0.2em;
+  font-size: 1.4rem;
+  font-weight: 700;
+  max-width: 500px;
+
+  width: 90%;
+}
+.login-loader {
+  font-size: 20px;
+  margin-top: 10px;
+  font-weight: 600;
+}
 
 .input-group input:focus {
-  border: 3px solid #00bfff;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+  border: 3px solid #6350b8;
+  box-shadow: 0 0 10px rgba(92, 44, 146, 0.522);
 }

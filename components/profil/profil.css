@@ -1,0 +1,131 @@
+.user-profil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  /* border: 1px solid white; */
+}
+.profil {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 40px;
+  gap: 0.4em;
+}
+.useravatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.useravatar img {
+  width: 100%;
+  height: 100%;
+}
+.user-title {
+  font-size: 25px;
+}
+
+.order-continer {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  max-width: 500px;
+  width: 100%;
+}
+.order-continer h2 {
+  font-size: 34px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 1.5px;
+}
+
+.order-continer p {
+  font-weight: 600;
+  font-size: 17px;
+}
+.order-continer a {
+  background-color: #2d2dc0;
+  width: 200px;
+  padding: 12px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 20px auto 0 auto;
+}
+/* **** */
+.loader-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 100px;
+  gap: 0.6em;
+}
+.avatar-loader {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: rgb(109, 109, 109);
+}
+.user-title_loader {
+  width: 100px;
+  height: 20px;
+  background-color: rgb(109, 109, 109);
+}
+.order-continer_loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 12px;
+  max-width: 500px;
+  width: 100%;
+}
+.order-container_title {
+  padding: 20px;
+  width: 200px;
+  background-color: rgb(109, 109, 109);
+}
+.order-continer_discription {
+  padding: 20px;
+  width: 300px;
+  background-color: rgb(109, 109, 109);
+}
+.order-continer_btn {
+  border-radius: 15px;
+  padding: 22px;
+
+  width: 200px;
+  background-color: rgb(109, 109, 109);
+}
+@media (max-width: 750px) {
+  .useravatar {
+    width: 140px;
+    height: 140px;
+  }
+  .user-title {
+    font-size: 18px;
+  }
+  .order-continer {
+    max-width: 450px;
+  }
+  .order-continer h2 {
+    font-size: 28px;
+  }
+  .order-continer p {
+    font-size: 15px;
+  }
+  .order-continer a {
+    width: 180px;
+    font-size: 15px;
+    padding: 10px;
+  }
+}

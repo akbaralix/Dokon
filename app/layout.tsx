@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/navbar/navbar";
 import "./globals.css";
 
@@ -16,8 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Toaster position="top-right" />
         <Navbar />
-        <main>{children}</main>
+        <main className="main">{children}</main>
       </body>
     </html>
   );

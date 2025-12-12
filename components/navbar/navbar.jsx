@@ -5,12 +5,20 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { GrHomeRounded } from "react-icons/gr";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import "./navbar.css";
 
 function Navbar() {
   const pathname = usePathname();
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLogged(!!token);
+  }, []);
+
   return (
     <div>
       <div className="navbar">
@@ -28,14 +36,21 @@ function Navbar() {
         </div>
 
         <div className="store-action-buttons">
-          <Link href="/login">
-            <FaRegUser />
-            <span className="store-actions-item">Kirish</span>
-          </Link>
+          {isLogged ? (
+            <Link href="/profil">
+              <FaRegUser />
+              <span className="store-actions-item">Profil</span>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <FaRegUser />
+              <span className="store-actions-item">Kirish</span>
+            </Link>
+          )}
 
           <Link href="/sevimli">
             <FaRegHeart />
-            <span className="store-actions-item">Saralanganlar</span>
+            <span className="store-actions-item">Sevimli</span>
           </Link>
 
           <Link href="/savat">
@@ -48,32 +63,35 @@ function Navbar() {
       <div className="mobile-menu">
         <Link href="/" className={pathname === "/" ? "active" : ""}>
           <GrHomeRounded />
-          <span className="mobile-menu_title">Bosh sahifa</span>
+          <span className="mobile-menu_title">Sahifa</span>
         </Link>
-        <Link
-          href="/sevimli"
-          className={pathname === "/sevimli" ? "active" : ""}
-        >
+
+        <Link href="/search" className={pathname === "/search" ? "active" : ""}>
           <IoSearch />
           <span className="mobile-menu_title">Qidirish</span>
         </Link>
+
         <Link
           href="/sevimli"
           className={pathname === "/sevimli" ? "active" : ""}
         >
           <FaRegHeart />
-          <span className="mobile-menu_title">Saralanganlar</span>
+          <span className="mobile-menu_title">Sevimli</span>
         </Link>
-        <Link href="/savat" className={pathname === "/sevimli" ? "active" : ""}>
+
+        <Link href="/savat" className={pathname === "/savat" ? "active" : ""}>
           <FiShoppingCart />
           <span className="mobile-menu_title">Savat</span>
         </Link>
+
         <Link
-          href="/sevimli"
-          className={pathname === "/sevimli" ? "active" : ""}
+          href={isLogged ? "/profil" : "/login"}
+          className={pathname === "/profil" ? "active" : ""}
         >
           <FaRegUser />
-          <span className="mobile-menu_title">Profil</span>
+          <span className="mobile-menu_title">
+            {isLogged ? "Profil" : "Kirish"}
+          </span>
         </Link>
       </div>
     </div>

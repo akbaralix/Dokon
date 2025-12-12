@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import "./home.css";
 import { GrPrevious, GrNext } from "react-icons/gr";
@@ -6,6 +8,10 @@ import { TbBasketHeart } from "react-icons/tb";
 import Sevimli from "../sevimli/sevimli";
 
 function Home() {
+  const [card, setCard] = useState(0);
+  const addCardbtn = () => {
+    setCard(card + 1);
+  };
   const [mahsulotlar, setMasulotlar] = useState([
     {
       id: 1,
@@ -72,7 +78,7 @@ function Home() {
 
   const [favorites, setFavorites] = useState([]);
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("favorites")) || [];
+    const stored = JSON.parse(localStorage.getItem("favorites") ?? "[]");
     setFavorites(stored);
   }, []);
   useEffect(() => {
@@ -179,7 +185,7 @@ function Home() {
                 </div>
                 <div className="product-card__title">{m.title}</div>
                 <div className="product-card__cart">
-                  <button>
+                  <button onClick={addCardbtn}>
                     <div className="card-button-content">
                       <TbBasketHeart />
                       <span>Savatga</span>

@@ -95,7 +95,7 @@
 }
 
 .image-wrapper {
-  height: 310px;
+  width: 100%;
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -106,7 +106,7 @@
   transition: 0.3s ease;
 }
 .image-wrapper img:hover {
-  transform: scale(1.04);
+  transform: scale(1.01);
 }
 .product-card__actions {
   position: absolute;
@@ -166,6 +166,7 @@
 }
 @media (max-width: 1000px) {
   .banner-img {
+    margin-top: 20px;
     height: 250px;
   }
   .slider-button {

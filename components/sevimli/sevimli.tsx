@@ -51,7 +51,7 @@ function Sevimli() {
         const isFav = true; // Sevimli sahifada bu mahsulot allaqachon sevimli
 
         return (
-          <div className="product-card" key={item.id}>
+          <div className="product-card_sevimli" key={item.id}>
             <div className="image-wrapper">
               <img src={item.rasmi} alt="" />
             </div>
@@ -68,7 +68,9 @@ function Sevimli() {
 
             <div className="product-card__details">
               <div className="product-card__price">
-                <span className="card-price">{item.narx.toLocaleString()}</span>
+                <span className="card-price">
+                  {Number(item.narx).toLocaleString()}
+                </span>
               </div>
               <div className="product-card__title">{item.title}</div>
             </div>
