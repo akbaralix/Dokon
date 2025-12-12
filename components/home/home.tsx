@@ -17,7 +17,7 @@ function Home() {
       id: 1,
       narx: 120000,
       title:
-        "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
+        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
       rasmi:
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
@@ -25,7 +25,7 @@ function Home() {
       id: 2,
       narx: 120000,
       title:
-        "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
+        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
       rasmi:
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
@@ -33,7 +33,7 @@ function Home() {
       id: 3,
       narx: 120000,
       title:
-        "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
+        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
       rasmi:
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
@@ -41,7 +41,7 @@ function Home() {
       id: 4,
       narx: 120000,
       title:
-        "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
+        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
       rasmi:
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
@@ -49,7 +49,7 @@ function Home() {
       id: 5,
       narx: 120000,
       title:
-        "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
+        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
       rasmi:
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
@@ -57,7 +57,7 @@ function Home() {
       id: 6,
       narx: 120000,
       title:
-        "Tagliklar Huggies Elite Soft, yangi tug‘ilgan chaqaloqlar uchun 3-5 kg, 1 o‘lcham, 50 dona",
+        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
       rasmi:
         "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },

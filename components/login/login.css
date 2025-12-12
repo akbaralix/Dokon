@@ -8,7 +8,6 @@
 }
 
 .input-group {
-  max-width: 580px;
   display: flex;
   justify-content: center;
   margin: 1.5rem auto 0 auto;
@@ -37,7 +36,6 @@
   font-size: 1.4rem;
   font-weight: 700;
   max-width: 500px;
-
   width: 90%;
 }
 .login-loader {
@@ -49,4 +47,9 @@
 .input-group input:focus {
   border: 3px solid #6350b8;
   box-shadow: 0 0 10px rgba(92, 44, 146, 0.522);
+}
+@media (max-width: 750px) {
+  .input-group {
+    gap: 0.5em;
+  }
 }

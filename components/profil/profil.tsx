@@ -46,20 +46,20 @@ const Profil = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  if (!user)
-    return (
-      <div className="loader-container">
-        <div className="loader">
-          <div className="avatar-loader"></div>
-          <div className="user-title_loader"></div>
-        </div>
-        <div className="order-continer_loader">
-          <div className="order-container_title"></div>
-          <div className="order-continer_discription"></div>
-          <div className="order-continer_btn"></div>
-        </div>
+  if (!user) window.location.href = "./login";
+  return (
+    <div className="loader-container">
+      <div className="loader">
+        <div className="avatar-loader"></div>
+        <div className="user-title_loader"></div>
       </div>
-    );
+      <div className="order-continer_loader">
+        <div className="order-container_title"></div>
+        <div className="order-continer_discription"></div>
+        <div className="order-continer_btn"></div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="user-profil">
