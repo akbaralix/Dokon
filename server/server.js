@@ -115,12 +115,14 @@ app.get("/profile", auth, async (req, res) => {
 });
 
 // ================= FRONTEND =====================
-app.all("*", (req, res) => handle(req, res));
-
+app.all("/:pathMatch(.*)*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // ================= START SERVER =====================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 
 
 
