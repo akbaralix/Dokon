@@ -113,15 +113,15 @@ app.get("/profile", auth, async (req, res) => {
   }
 });
 
-// ================= FRONTEND ROUTES =====================
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "client", "dist")));
 
-// React yoki Next.js frontend routing uchun 404 ga yo‘naltirish
-app.get("*", (req, res) => {
+// Fallback: React/Next frontend uchun
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
+});;
 
 // ================= START SERVER =====================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
