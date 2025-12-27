@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const auth = require("./auth");
 require("dotenv").config();
+import path from "path";
 
 const app = express();
 app.use(express.json());
@@ -111,7 +112,11 @@ app.get("/profile", auth, async (req, res) => {
     res.status(500).json({ message: "Server xatoligi!" });
   }
 });
+app.use(express.static(path.join(__dirname, "client", "dist")));
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
