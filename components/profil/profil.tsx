@@ -1,17 +1,23 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import "./profil.css";
+
+// Foydalanuvchi ma'lumotlari uchun interfeys
 interface User {
   telegramId: number;
   firstName: string;
   lastName: string;
   username: string;
-  avatar: string | null;
+  avatar: string; // null bo'lishi mumkin bo'lsa: string | null
 }
-// JWT decode qilish uchun helper
-function parseJwt(token: string) {
+
+// JWT decode qilish uchun helper (Type xavfsizligi bilan)
+function parseJwt(token: string): any {
   try {
     const base64Url = token.split(".")[1];
+    if (!base64Url) return null;
+
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
       atob(base64)
@@ -27,29 +33,56 @@ function parseJwt(token: string) {
   }
 }
 
-const Profil = () => {
+const Profil: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) return;
 
-    const payload = parseJwt(token);
-    if (!payload || !payload.telegramId) {
+    if (!token) {
       window.location.href = "/login";
       return;
     }
 
-    const telegramId = payload.telegramId;
-    if (!telegramId) return;
+    const payload = parseJwt(token);
 
-    fetch(`https://market-vn26.onrender.com/profile/${telegramId}`)
-      .then((res) => res.json())
-      .then((data) => setUser(data.user))
-      .catch((err) => console.error(err));
+    if (!payload || !payload.telegramId) {
+      localStorage.removeItem("token"); // Yaroqsiz tokenni o'chirish
+      window.location.href = "/login";
+      return;
+    }
+
+    const fetchUserProfile = async () => {
+      try {
+        const res = await fetch(
+          `https://market-vn26.onrender.com/profile/${payload.telegramId}`
+        );
+        if (!res.ok) throw new Error("Profil yuklanmadi");
+
+        const data = await res.json();
+        setUser(data.user);
+      } catch (err) {
+        console.error("Fetch xatoligi:", err);
+        setIsError(true);
+      }
+    };
+
+    fetchUserProfile();
   }, []);
 
-  if (!user)
+  // Xatolik yuz berganda
+  if (isError) {
+    return (
+      <div className="error-container">
+        <p>Ma'lumotlarni yuklashda xatolik yuz berdi.</p>
+        <button onClick={() => window.location.reload()}>Qayta urinish</button>
+      </div>
+    );
+  }
+
+  // Loader (Skelet holati)
+  if (!user) {
     return (
       <div className="loader-container">
         <div className="loader">
@@ -63,15 +96,24 @@ const Profil = () => {
         </div>
       </div>
     );
+  }
 
   return (
     <div className="user-profil">
       <div className="profil">
         <div className="useravatar">
-          <img src={user.avatar} alt="" />
+          {/* Avatar bo'lmasa standart rasm ko'rsatish */}
+          <img
+            src={user.avatar || "/default-avatar.png"}
+            alt={`${user.firstName} avatar`}
+          />
         </div>
-        <div className="user-title">{user.firstName}</div>
+        <div className="user-title">
+          {user.firstName} {user.lastName}
+        </div>
+        {user.username && <div className="user-username">@{user.username}</div>}
       </div>
+
       <div className="orders">
         <div className="order-continer">
           <h2>Hech narsa yo'q</h2>
@@ -79,7 +121,9 @@ const Profil = () => {
             Sizda faol buyurtma mavjud emas! Barcha kerakli narsalarni topish
             uchun qidirishdan foydalaning!
           </p>
-          <a href="/">Xaridni boshlash</a>
+          <a href="/" className="shop-link">
+            Xaridni boshlash
+          </a>
         </div>
       </div>
     </div>
