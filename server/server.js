@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(cors());
 
 // ================= TELEGRAM & MONGO CONFIG =====================
-const BOT_TOKEN = process.env.BOT_TOKEN || "201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
+const BOT_TOKEN =
+  process.env.BOT_TOKEN || "201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
 const MONGO_URI =
   process.env.MONGO_URI ||
   "mongodb+srv://tursunboyevakbarali807_db_user:iFgH6I9m9ehbqvOf@cluster0.38dhsqh.mongodb.net/?appName=Cluster0";
@@ -116,8 +117,8 @@ app.get("/profile", auth, async (req, res) => {
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "client", "dist")));
 
-// Barcha route’larni frontend index.html ga yo‘naltirish
-app.get("/*", (req, res) => {
+// React yoki Next.js frontend routing uchun 404 ga yo‘naltirish
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
