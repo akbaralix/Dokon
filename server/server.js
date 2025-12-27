@@ -16,9 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Telegram va Mongo konfiguratsiyasi
-const BOT_TOKEN =
-  process.env.BOT_TOKEN || "201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
+// ================= TELEGRAM & MONGO CONFIG =====================
+const BOT_TOKEN = process.env.BOT_TOKEN || "201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
 const MONGO_URI =
   process.env.MONGO_URI ||
   "mongodb+srv://tursunboyevakbarali807_db_user:iFgH6I9m9ehbqvOf@cluster0.38dhsqh.mongodb.net/?appName=Cluster0";
@@ -29,11 +28,10 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB error:", err));
 
-// ================= VERIFY =====================
+// ================= VERIFY ROUTE =====================
 app.post("/verify", async (req, res) => {
   try {
     const { code } = req.body;
-
     const record = await OTP.findOne({ otp: code });
 
     if (!record) return res.status(400).json({ message: "Noto‘g‘ri kod!" });
@@ -84,7 +82,7 @@ app.post("/verify", async (req, res) => {
   }
 });
 
-// ================= PROFILE =====================
+// ================= PROFILE ROUTES =====================
 app.get("/profile/:telegramId", async (req, res) => {
   try {
     const telegramId = Number(req.params.telegramId);
@@ -114,12 +112,12 @@ app.get("/profile", auth, async (req, res) => {
   }
 });
 
-// ================= FRONTEND =====================
+// ================= FRONTEND ROUTES =====================
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "client", "dist")));
 
 // Barcha route’larni frontend index.html ga yo‘naltirish
-app.get('*', (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
