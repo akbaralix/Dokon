@@ -115,14 +115,14 @@ app.get("/profile", auth, async (req, res) => {
 });
 
 // ================= FRONTEND =====================
-app.all("/:pathMatch(.*)*", (req, res) => {
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "client", "dist")));
+
+// Barcha route’larni frontend index.html ga yo‘naltirish
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
 // ================= START SERVER =====================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-
-
