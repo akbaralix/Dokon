@@ -115,19 +115,12 @@ app.get("/profile", auth, async (req, res) => {
 });
 
 // ================= FRONTEND =====================
-// FRONTEND
-const __dirname = path.resolve(); // ESM uchun
-app.use(express.static(path.join(__dirname, "client", "dist"))); // Vite build
-
-// Barcha route’larni frontend index.html ga yo‘naltirish
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
-
+app.all("*", (req, res) => handle(req, res));
 
 
 // ================= START SERVER =====================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 
 
