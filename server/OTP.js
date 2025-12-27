@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const otpSchema = new mongoose.Schema({
   telegramId: Number,
@@ -6,4 +6,7 @@ const otpSchema = new mongoose.Schema({
   expiresAt: Number,
 });
 
-module.exports = mongoose.model("OTP", otpSchema); // collection: "otps"
+const OTP = mongoose.model("OTP", otpSchema); // collection: "otps"
+
+export default OTP;
+
