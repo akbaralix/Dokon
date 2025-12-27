@@ -11,13 +11,14 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-app.use(cors({ origin: "https://market-vn26.onrender.com" }));
-require("./index.js");
+app.use(cors());
 
 require("./index.js");
-
+const BOT_TOKEN = "8201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
+const MONGO_URI =
+  "mongodb+srv://tursunboyevakbarali807_db_user:iFgH6I9m9ehbqvOf@cluster0.38dhsqh.mongodb.net/?appName=Cluster0";
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB error:", err));
 
@@ -33,7 +34,7 @@ app.post("/verify", async (req, res) => {
       return res.status(400).json({ message: "Kod eskirgan!" });
 
     const telegramProfile = await axios.get(
-      `https://api.telegram.org/bot${process.env.BOT_TOKEN}/getChat?chat_id=${record.telegramId}`
+      `https://api.telegram.org/bot${BOT_TOKEN}/getChat?chat_id=${record.telegramId}`
     );
 
     const info = telegramProfile.data.result;
@@ -43,7 +44,7 @@ app.post("/verify", async (req, res) => {
 
     // 1. User profil rasmlarini so‘rov qilamiz
     const photosRes = await axios.get(
-      `https://api.telegram.org/bot${process.env.BOT_TOKEN}/getUserProfilePhotos?user_id=${record.telegramId}&limit=1`
+      `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${record.telegramId}&limit=1`
     );
 
     if (photosRes.data.result.total_count > 0) {
@@ -51,10 +52,10 @@ app.post("/verify", async (req, res) => {
 
       // 2. file_id dan file_path olish
       const fileRes = await axios.get(
-        `https://api.telegram.org/bot${process.env.BOT_TOKEN}/getFile?file_id=${fileId}`
+        `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`
       );
 
-      avatar = `https://api.telegram.org/file/bot${process.env.BOT_TOKEN}/${fileRes.data.result.file_path}`;
+      avatar = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileRes.data.result.file_path}`;
     }
 
     const payload = {
@@ -111,7 +112,8 @@ app.get("/profile", auth, async (req, res) => {
   }
 });
 
-// ================ START SERVER ================
-app.listen(5000, () => {
-  console.log("Server running on https://market-vn26.onrender.com");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
 });

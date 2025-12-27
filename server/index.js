@@ -23,7 +23,9 @@ bot.start(async (ctx) => {
     expiresAt: Date.now() + 60_000, // 1 daqiqa
   });
 
-  await ctx.reply(`Sizning 1 daqiqalik kodingiz: ${otp}`);
+  await ctx.reply(`Sizning kodingiz: \`${otp}\``, {
+    parse_mode: "MarkdownV2",
+  });
 });
 
 bot.launch();
