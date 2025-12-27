@@ -1,23 +1,29 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const OTP = require("./OTP");
-const User = require("./user");
-const axios = require("axios");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
-const auth = require("./auth");
-require("dotenv").config();
+// server/server.js
+import express from "express";
+import mongoose from "mongoose";
+import OTP from "./OTP.js";
+import User from "./user.js";
+import axios from "axios";
+import jwt from "jsonwebtoken";
+import cors from "cors";
+import auth from "./auth.js";
 import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
-
 app.use(cors());
 
-require("./index.js");
-const BOT_TOKEN = "8201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
+// Telegram va Mongo konfiguratsiyasi
+const BOT_TOKEN =
+  process.env.BOT_TOKEN || "201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
 const MONGO_URI =
+  process.env.MONGO_URI ||
   "mongodb+srv://tursunboyevakbarali807_db_user:iFgH6I9m9ehbqvOf@cluster0.38dhsqh.mongodb.net/?appName=Cluster0";
+
+// MongoDB ga ulanish
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("MongoDB connected"))
@@ -42,20 +48,15 @@ app.post("/verify", async (req, res) => {
 
     // Telegram API dan profil rasmi olish
     let avatar = null;
-
-    // 1. User profil rasmlarini so‘rov qilamiz
     const photosRes = await axios.get(
       `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${record.telegramId}&limit=1`
     );
 
     if (photosRes.data.result.total_count > 0) {
       const fileId = photosRes.data.result.photos[0][0].file_id;
-
-      // 2. file_id dan file_path olish
       const fileRes = await axios.get(
         `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`
       );
-
       avatar = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileRes.data.result.file_path}`;
     }
 
@@ -82,7 +83,8 @@ app.post("/verify", async (req, res) => {
     res.status(500).json({ message: "Server xatoligi!" });
   }
 });
-// /profile/:telegramId
+
+// ================= PROFILE =====================
 app.get("/profile/:telegramId", async (req, res) => {
   try {
     const telegramId = Number(req.params.telegramId);
@@ -98,7 +100,6 @@ app.get("/profile/:telegramId", async (req, res) => {
   }
 });
 
-// /profile (auth bilan)
 app.get("/profile", auth, async (req, res) => {
   try {
     const user = await User.findOne({
@@ -112,13 +113,15 @@ app.get("/profile", auth, async (req, res) => {
     res.status(500).json({ message: "Server xatoligi!" });
   }
 });
-app.use(express.static(path.join(__dirname, "client", "dist")));
+
+// ================= FRONTEND =====================
+const __dirname = path.resolve(); // ESM uchun
+app.use(express.static(path.join(__dirname, "client", "dist"))); // Vite build
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
-const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
-});
+// ================= START SERVER =====================
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
