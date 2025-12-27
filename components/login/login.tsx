@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import { FaTelegram } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import "./login.css";
 
@@ -62,7 +63,7 @@ function Login() {
   const submitOTP = async (code: string) => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/verify", {
+      const res = await fetch("https://market-vn26.onrender.com/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
@@ -89,8 +90,17 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-title">
-        <a style={{ color: "#3b20b3ff" }} href="https://t.me/Onlayndokonibot">
-          ONLINE
+        <a
+          style={{
+            color: "#8f7de2ff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+          }}
+          href="https://t.me/Onlayndokonibot"
+        >
+          <FaTelegram /> @Onlayndokonibot
         </a>
         <span>Telegram botga kiring va 1 daqiqada kodingizni oling</span>
       </div>
@@ -110,9 +120,6 @@ function Login() {
         ))}
       </div>
       {loading && <p className="login-loader">Tekshirilmoqda...</p>}
-      <span style={{ fontSize: 15, color: "rgba(198, 169, 240, 1)" }}>
-        Kod faqat 1 minut amal qiladi
-      </span>
     </div>
   );
 }

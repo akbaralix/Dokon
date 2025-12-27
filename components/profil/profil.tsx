@@ -43,7 +43,7 @@ const Profil = () => {
     const telegramId = payload.telegramId;
     if (!telegramId) return;
 
-    fetch(`http://localhost:5000/profile/${telegramId}`)
+    fetch(`https://market-vn26.onrender.com/profile/${telegramId}`)
       .then((res) => res.json())
       .then((data) => setUser(data.user))
       .catch((err) => console.error(err));

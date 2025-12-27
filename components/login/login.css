@@ -52,4 +52,7 @@
   .input-group {
     gap: 0.5em;
   }
+  .login-title {
+    font-size: 1.2rem;
+  }
 }

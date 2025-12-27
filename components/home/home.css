@@ -54,6 +54,8 @@
   background-color: rgba(255, 255, 255, 0.433);
 }
 .swiper-pagination-bullet-active {
+  height: 12px;
+  width: 12px;
   background-color: rgb(227, 229, 232);
 }
 
@@ -84,7 +86,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 30px;
+  font-size: 20px;
   padding: 10px 0;
 }
 
@@ -182,6 +184,7 @@
     height: 300px;
   }
   .products {
+    margin-bottom: 70px;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   }
   .image-wrapper {

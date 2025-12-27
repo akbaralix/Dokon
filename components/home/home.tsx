@@ -1,17 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import "./home.css";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import { CiHeart } from "react-icons/ci";
 import { TbBasketHeart } from "react-icons/tb";
-import Sevimli from "../sevimli/sevimli";
+import toast from "react-hot-toast";
+import "./home.css";
 
 function Home() {
-  const [card, setCard] = useState(0);
   const addCardbtn = () => {
-    setCard(card + 1);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Iltimos akkuntga kiring");
+      return;
+    }
   };
+
   const [mahsulotlar, setMasulotlar] = useState([
     {
       id: 1,
@@ -91,6 +95,9 @@ function Home() {
       setFavorites([...favorites, product]);
     }
   };
+  function handleAddCard() {
+    alert();
+  }
   return (
     <div>
       <div className="banner-block">
@@ -186,7 +193,10 @@ function Home() {
                 <div className="product-card__title">{m.title}</div>
                 <div className="product-card__cart">
                   <button onClick={addCardbtn}>
-                    <div className="card-button-content">
+                    <div
+                      onClick={handleAddCard}
+                      className="card-button-content"
+                    >
                       <TbBasketHeart />
                       <span>Savatga</span>
                     </div>

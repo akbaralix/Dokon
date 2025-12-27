@@ -11,7 +11,7 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://market-vn26.onrender.com" }));
 require("./index.js");
 
 require("./index.js");
@@ -113,5 +113,5 @@ app.get("/profile", auth, async (req, res) => {
 
 // ================ START SERVER ================
 app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+  console.log("Server running on https://market-vn26.onrender.com");
 });
