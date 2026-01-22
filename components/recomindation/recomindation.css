@@ -1,0 +1,58 @@
+.recomindation {
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  gap: 1.2em;
+  scrollbar-width: none;
+  padding: 10px 20px;
+  background-color: rgb(157, 121, 241);
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.recomindation::-webkit-scrollbar {
+  display: none;
+}
+.recom-title {
+  position: absolute;
+  margin-bottom: 2.5em;
+}
+.recom-title h2 {
+  font-size: 30px;
+  font-family: "Inter";
+}
+
+.recom-product {
+  margin-top: 30px;
+  min-width: 180px;
+  max-width: 300px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.recom-wrapper {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.recom-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Mobil moslashuv */
+@media (max-width: 1000px) {
+  .recomindation {
+    margin-bottom: 80px;
+    gap: 0.4em;
+  }
+
+  .recom-product {
+    min-width: 170px;
+    padding: 8px;
+  }
+}

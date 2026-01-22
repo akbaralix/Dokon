@@ -11,6 +11,7 @@
 }
 .mobile-menu {
   display: none;
+  user-select: none;
 }
 .store-action-buttons {
   display: flex;
@@ -35,8 +36,12 @@
 .input-line input {
   height: 40px;
   padding: 0 0.9rem;
+  border: none;
+  background: none;
   width: 100%;
   outline: none;
+  font-size: 16px;
+  color: white;
 }
 .button__search {
   font-size: 2rem;

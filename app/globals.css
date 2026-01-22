@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url(https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;800;900&display=swap);
 
 :root {
   --background: #111;
@@ -8,6 +9,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scrollbar-width: thin;
 }
 
 body {
@@ -19,4 +21,13 @@ body {
   margin: 0 auto;
   max-width: 1240px;
   padding: 0 10px;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  color: white;
 }

@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   const submitOTP = async (code: string): Promise<void> => {
     setLoading(true);
     try {
-      const res = await fetch("https://market-vn26.onrender.com/verify", {
+      const res = await fetch("http://localhost:5000/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
@@ -62,7 +62,7 @@ const Login: React.FC = () => {
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ): void => {
     const val = e.target.value;
     if (!/^\d?$/.test(val)) return;
@@ -84,7 +84,7 @@ const Login: React.FC = () => {
 
   const handleKeyDown = (
     e: KeyboardEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ): void => {
     if (e.key === "Backspace" && values[index] === "" && index > 0) {
       inputs.current[index - 1]?.focus();

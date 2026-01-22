@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   telegramId: { type: Number, required: true, unique: true },
   firstName: String,
   lastName: String,
+  phone: String,
   username: String,
   avatar: String,
   createdAt: { type: Date, default: Date.now },

@@ -3,70 +3,55 @@
 import { useState, useEffect } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import { CiHeart } from "react-icons/ci";
-import { TbBasketHeart } from "react-icons/tb";
+import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
+import Recomindation from "../recomindation/recomindation";
 import toast from "react-hot-toast";
 import "./home.css";
 
-// 1. Mahsulot uchun interfeys yaratamiz
 interface Product {
   id: number;
   narx: number;
   title: string;
   rasm: string;
+  quantity?: number;
 }
 
 function Home() {
-  const addCardbtn = (): void => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Savatga qo'shish uchun akkuntga kiring!");
-      return;
-    }
-    // Savatga qo'shish logikasi bu yerda bo'ladi
-  };
-
-  // 2. State-larga turlarni biriktiramiz
   const [mahsulotlar] = useState<Product[]>([
     {
       id: 1,
       narx: 120000,
-      title:
-        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
+      title: "Bolalar uchun yangi yil sovgasi...",
       rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
       id: 2,
       narx: 120000,
-      title:
-        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
+      title: "Bolalar uchun yangi yil sovgasi...",
       rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
       id: 3,
       narx: 120000,
-      title:
-        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
+      title: "Bolalar uchun yangi yil sovgasi...",
       rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
       id: 4,
       narx: 120000,
-      title:
-        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
+      title: "Bolalar uchun yangi yil sovgasi...",
       rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
       id: 5,
       narx: 120000,
-      title:
-        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
+      title: "Bolalar uchun yangi yil sovgasi...",
       rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
     {
       id: 6,
       narx: 120000,
-      title:
-        "Bolalar uchun yangi yil sovgasi. Farzandingiz uchun sovgani hoziroq harid qiling.",
+      title: "Bolalar uchun yangi yil sovgasi...",
       rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
     },
   ]);
@@ -78,7 +63,22 @@ function Home() {
   ];
 
   const [current, setCurrent] = useState<number>(0);
-  const [favorites, setFavorites] = useState<Product[]>([]);
+
+  const [favorites, setFavorites] = useState<Product[]>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("favorites");
+      return stored ? JSON.parse(stored) : [];
+    }
+    return [];
+  });
+
+  const [cart, setCart] = useState<Product[]>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("mycart");
+      return stored ? JSON.parse(stored) : [];
+    }
+    return [];
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -88,21 +88,45 @@ function Home() {
   }, [bannerImg.length]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("favorites");
-    if (stored) {
-      setFavorites(JSON.parse(stored));
-    }
-  }, []);
-
-  useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
+
+  useEffect(() => {
+    localStorage.setItem("mycart", JSON.stringify(cart));
+  }, [cart]);
 
   const toggleFavorite = (product: Product): void => {
     if (favorites.find((item) => item.id === product.id)) {
       setFavorites(favorites.filter((item) => item.id !== product.id));
     } else {
       setFavorites([...favorites, product]);
+    }
+  };
+
+  const updateQuantity = (product: Product, delta: number): void => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Akkuntga kiring!");
+      return;
+    }
+
+    const existingItem = cart.find((item) => item.id === product.id);
+
+    if (existingItem) {
+      const newQuantity = (existingItem.quantity || 1) + delta;
+
+      if (newQuantity <= 0) {
+        setCart(cart.filter((item) => item.id !== product.id));
+      } else {
+        setCart(
+          cart.map((item) =>
+            item.id === product.id ? { ...item, quantity: newQuantity } : item,
+          ),
+        );
+      }
+    } else if (delta > 0) {
+      setCart([...cart, { ...product, quantity: 1 }]);
+      toast.success("Mahsulot savatga qo'shildi!");
     }
   };
 
@@ -144,7 +168,7 @@ function Home() {
       </div>
 
       <div className="promo-wrapper">
-        {[1, 2, 3].map((item) => (
+        {[1, 2, 3, 4].map((item) => (
           <div className="promo-item-wrapper" key={item}>
             <img
               src="https://static.uzum.uz/static/promo_images/756b6f56-9d2d-414c-a9d3-37d40d1c808b"
@@ -153,18 +177,11 @@ function Home() {
             <span>Onalar va bolalar uchun</span>
           </div>
         ))}
-        <div className="promo-item-wrapper">
-          <img
-            src="https://static.uzum.uz/static/promo_images/f23bd39d-326b-459f-8ad4-8ea31d037e73"
-            alt="New Year"
-          />
-          <span>Yangi yil uchun</span>
-        </div>
       </div>
 
-      <div className="mashhur">
+      <div className="title-text">
         <h2>Mashhur</h2>
-        <span className="text-lg translate-y-1">
+        <span style={{ marginTop: 7, fontSize: 17 }}>
           <GrNext />
         </span>
       </div>
@@ -172,6 +189,8 @@ function Home() {
       <div className="products">
         {mahsulotlar.map((m) => {
           const isFav = favorites.some((item) => item.id === m.id);
+          const cartItem = cart.find((item) => item.id === m.id);
+
           return (
             <div className="product-card" key={m.id}>
               <div className="image-wrapper">
@@ -192,19 +211,48 @@ function Home() {
                   </span>
                 </div>
                 <div className="product-card__title">{m.title}</div>
+
                 <div className="product-card__cart">
-                  <button onClick={addCardbtn}>
-                    <div className="card-button-content">
-                      <TbBasketHeart />
-                      <span>Savatga</span>
+                  {cartItem ? (
+                    <div className="quantity-controls">
+                      <button
+                        onClick={() => updateQuantity(m, -1)}
+                        className="q-btn"
+                      >
+                        <TbMinus />
+                      </button>
+                      <span className="q-num">{cartItem.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(m, 1)}
+                        className="q-btn"
+                      >
+                        <TbPlus />
+                      </button>
                     </div>
-                  </button>
+                  ) : (
+                    <button
+                      onClick={() => updateQuantity(m, 1)}
+                      className="add-btn"
+                    >
+                      <div className="card-button-content">
+                        <TbBasketHeart />
+                        <span>Savatga</span>
+                      </div>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           );
         })}
       </div>
+      <div className="title-text">
+        <h2>Tavsiya qilamiz</h2>
+        <span style={{ marginTop: 7, fontSize: 17 }}>
+          <GrNext />
+        </span>
+      </div>
+      <Recomindation />
     </div>
   );
 }

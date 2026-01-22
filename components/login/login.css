@@ -15,9 +15,9 @@
 }
 
 .input-group input {
-  width: 50px;
-  height: 60px;
-  border-radius: 1rem;
+  width: 60px;
+  height: 2em;
+  border-radius: 0.8rem;
   background-color: white;
   padding: 0.2rem;
   color: black;
@@ -46,7 +46,7 @@
 
 .input-group input:focus {
   border: 3px solid #6350b8;
-  box-shadow: 0 0 10px rgba(92, 44, 146, 0.522);
+  box-shadow: 0 0 10px rgba(105, 0, 225, 0.522);
 }
 @media (max-width: 750px) {
   .input-group {

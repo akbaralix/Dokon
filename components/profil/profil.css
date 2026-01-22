@@ -53,6 +53,41 @@
   font-weight: 600;
   margin: 20px auto 0 auto;
 }
+/* error */
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin-top: 200px;
+}
+.error-container h2 {
+  font-size: 27px;
+  font-family: "Inter";
+}
+.error-container button {
+  background-color: #2d2dc0;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  font-size: 17px;
+}
+
 /* **** */
 .loader-container {
   display: flex;

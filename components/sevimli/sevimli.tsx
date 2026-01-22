@@ -30,11 +30,7 @@ function Sevimli() {
   if (!favorites || favorites.length === 0)
     return (
       <div className="empty-page">
-        <img
-          className="empty-page_img"
-          src="https://uzum.uz/static/img/hearts.cf414be.png"
-          alt=""
-        />
+        <img className="empty-page_img" src="/favorites.png" alt="" />
         <h1 className="empty-page_title">
           Bu yerda sevimli tovarlaringizni saqlab qoʻyamiz
         </h1>
@@ -53,7 +49,7 @@ function Sevimli() {
         return (
           <div className="product-card_sevimli" key={item.id}>
             <div className="image-wrapper">
-              <img src={item.rasmi} alt="" />
+              <img src={item.rasm} alt="" />
             </div>
 
             {/* Yurak tugmasi */}

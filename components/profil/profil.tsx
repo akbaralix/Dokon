@@ -23,7 +23,7 @@ function parseJwt(token: string): any {
       atob(base64)
         .split("")
         .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join("")
+        .join(""),
     );
 
     return JSON.parse(jsonPayload);
@@ -56,7 +56,7 @@ const Profil: React.FC = () => {
     const fetchUserProfile = async () => {
       try {
         const res = await fetch(
-          `https://market-vn26.onrender.com/profile/${payload.telegramId}`
+          `http://localhost:5000/profile/${payload.telegramId}`,
         );
         if (!res.ok) throw new Error("Profil yuklanmadi");
 
@@ -75,7 +75,7 @@ const Profil: React.FC = () => {
   if (isError) {
     return (
       <div className="error-container">
-        <p>Ma'lumotlarni yuklashda xatolik yuz berdi.</p>
+        <h2>Ma'lumotlarni yuklashda xatolik yuz berdi.</h2>
         <button onClick={() => window.location.reload()}>Qayta urinish</button>
       </div>
     );
