@@ -18,15 +18,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Konfiguratsiya (Xavfsizlik uchun .env dan olish tavsiya etiladi)
-const BOT_TOKEN =
-  process.env.BOT_TOKEN || "8201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
+require("./index.js");
+const BOT_TOKEN = "8201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
 const MONGO_URI =
   process.env.MONGO_URI ||
   "mongodb+srv://tursunboyevakbarali807_db_user:iFgH6I9m9ehbqvOf@cluster0.38dhsqh.mongodb.net/?appName=Cluster0";
-const JWT_SECRET = process.env.JWT_SECRET || "akbarali_secret_key_2026";
-
-// 2. MONGODB CONNECTION
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB connected successfully"))
@@ -34,12 +30,11 @@ mongoose
 
 // 3. API ROUTES (Barcha API so'rovlar Static fayllardan TEPADA turishi kerak)
 
-// ================= VERIFY OTP =====================
+// ================= VERIFY =====================
 app.post("/verify", async (req, res) => {
   try {
     const { code } = req.body;
 
-    // Bazadan kodni izlash
     const record = await OTP.findOne({ otp: code });
 
     if (!record) return res.status(400).json({ message: "Noto‘g‘ri kod!" });
@@ -102,9 +97,8 @@ app.post("/verify", async (req, res) => {
     res.status(500).json({ message: "Server xatoligi yuz berdi!" });
   }
 });
-
-// ================= PROFILE DATA =====================
-app.get("/profile", auth, async (req, res) => {
+// /profile/:telegramId
+app.get("/profile/:telegramId", async (req, res) => {
   try {
     const user = await User.findOne({ telegramId: req.user.telegramId });
     if (!user)
@@ -115,7 +109,8 @@ app.get("/profile", auth, async (req, res) => {
   }
 });
 
-app.get("/profile/:telegramId", async (req, res) => {
+// /profile (auth bilan)
+app.get("/profile", auth, async (req, res) => {
   try {
     const user = await User.findOne({
       telegramId: Number(req.params.telegramId),
@@ -127,22 +122,8 @@ app.get("/profile/:telegramId", async (req, res) => {
   }
 });
 
-// 4. FRONTEND SERVING
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "client", "dist")));
-
-// API bo'lmagan barcha so'rovlarni React/Vite index.html ga yo'naltirish
-// Bu qism API'lardan PASDA turishi shart!
-app.get(/.*/, (req, res) => {
-  // Agar so'rov tasodifan /verify kabi API manziliga GET bo'lib kelsa, JSON qaytarish yaxshi amaliyot
-  if (req.url.startsWith("/verify") || req.url.startsWith("/profile")) {
-    return res.status(404).json({ message: "API endpoint not found" });
-  }
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
-
-// 5. START SERVER
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server ishga tushdi: http://localhost:${PORT}`);
+  console.log("Server running on port", PORT);
 });
