@@ -18,7 +18,7 @@
   width: 60px;
   height: 2em;
   border-radius: 0.8rem;
-  background-color: white;
+  background-color: rgb(216, 216, 216);
   padding: 0.2rem;
   color: black;
   font-size: 2rem;
@@ -30,10 +30,11 @@
 }
 .login-title {
   display: flex;
+  align-items: center;
   flex-direction: column;
   margin: 0 auto;
   gap: 0.2em;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   max-width: 500px;
   width: 90%;
@@ -45,12 +46,15 @@
 }
 
 .input-group input:focus {
-  border: 3px solid #6350b8;
-  box-shadow: 0 0 10px rgba(105, 0, 225, 0.522);
+  background-color: white;
+  border: 2px solid #6350b8;
 }
 @media (max-width: 750px) {
   .input-group {
     gap: 0.5em;
+  }
+  .input-group input {
+    width: 50px;
   }
   .login-title {
     font-size: 1.2rem;

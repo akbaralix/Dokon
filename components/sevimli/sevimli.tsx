@@ -30,7 +30,11 @@ function Sevimli() {
   if (!favorites || favorites.length === 0)
     return (
       <div className="empty-page">
-        <img className="empty-page_img" src="/favorites.png" alt="" />
+        <img
+          className="empty-page_img"
+          src="/_Image_1-removebg-preview.png"
+          alt=""
+        />
         <h1 className="empty-page_title">
           Bu yerda sevimli tovarlaringizni saqlab qoʻyamiz
         </h1>
@@ -63,12 +67,12 @@ function Sevimli() {
             </div>
 
             <div className="product-card__details">
+              <div className="product-card__title">{item.title}</div>
               <div className="product-card__price">
                 <span className="card-price">
-                  {Number(item.narx).toLocaleString()}
+                  {Number(item.narx).toLocaleString() + " so'm"}
                 </span>
               </div>
-              <div className="product-card__title">{item.title}</div>
             </div>
 
             <button className="card-button">

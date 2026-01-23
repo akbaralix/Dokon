@@ -125,9 +125,8 @@
 }
 
 .info-container p {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.4;
-  margin-bottom: 8px;
 }
 
 .cart-praduct_price {
@@ -143,9 +142,13 @@
   border: 1px solid #ebedf0;
   border-radius: 8px;
   width: fit-content;
-  margin-top: 15px;
+  position: absolute;
+  right: 0px;
+  bottom: 10px;
 }
-
+.item-amout span {
+  font-size: 17px;
+}
 .cart-quantity-controls button {
   padding: 8px 12px;
   border: none;
@@ -236,14 +239,35 @@
   .cart-container {
     grid-template-columns: 1fr;
   }
+  .cart-products-container {
+    border: 0;
+  }
 
   .cart-sum {
     position: static;
     margin-bottom: 30px;
+    border: 0;
   }
 
   .image-container {
     width: 80px;
     height: 105px;
+  }
+  .info-container p {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .item-amout {
+    right: 0px;
+    bottom: 10px;
+    position: absolute;
+  }
+  .cart-praduct_price {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  .cart-quantity-controls button {
+    padding: 8px;
+    font-size: 16px;
   }
 }

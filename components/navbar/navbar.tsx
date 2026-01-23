@@ -56,6 +56,9 @@ function Navbar() {
           <Link href="/savat">
             <FiShoppingCart />
             <span className="store-actions-item">Savat</span>
+            <div className="cart-item__quantity">
+              <span>{}</span>
+            </div>
           </Link>
         </div>
       </div>

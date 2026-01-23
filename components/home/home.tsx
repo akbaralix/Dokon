@@ -104,12 +104,6 @@ function Home() {
   };
 
   const updateQuantity = (product: Product, delta: number): void => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Akkuntga kiring!");
-      return;
-    }
-
     const existingItem = cart.find((item) => item.id === product.id);
 
     if (existingItem) {
@@ -206,11 +200,11 @@ function Home() {
               </div>
               <div className="product-card__details">
                 <div className="product-card__price">
+                  <div className="product-card__title">{m.title}</div>
                   <span className="card-price">
                     {m.narx.toLocaleString()} so'm
                   </span>
                 </div>
-                <div className="product-card__title">{m.title}</div>
 
                 <div className="product-card__cart">
                   {cartItem ? (

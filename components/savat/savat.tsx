@@ -23,8 +23,9 @@ function Savat() {
     }
     setLoading(false);
   }, []);
+  if (loading) return null;
 
-  const quantityPlus = (item: Product) => () => {
+  const quantityPlus = (item: Product) => {
     const updatedItems = cartItems.map((cartItem) =>
       cartItem.id === item.id
         ? { ...cartItem, quantity: cartItem.quantity + 1 }
@@ -57,7 +58,12 @@ function Savat() {
     );
     setCartItems(updatedItems);
   };
-  if (loading) return null;
+  const handleCheckout = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return (window.location.href = "/login");
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -152,7 +158,7 @@ function Savat() {
               </div>
             </div>
             <div className="summary-actions">
-              <button>Rasmiylashtirish</button>
+              <button onClick={() => handleCheckout()}>Rasmiylashtirish</button>
             </div>
           </div>
         </div>
