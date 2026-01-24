@@ -119,6 +119,9 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="login-title">
+        <div className="login-img">
+          <img src="/logi-icon-preview.png" alt="" />
+        </div>
         <a
           style={{
             color: "#8f7de2ff",
@@ -126,6 +129,7 @@ const Login: React.FC = () => {
             alignItems: "center",
             justifyContent: "center",
             gap: 10,
+            marginBottom: 8,
           }}
           href="https://t.me/Onlayndokonibot"
           target="_blank"
@@ -154,7 +158,7 @@ const Login: React.FC = () => {
           />
         ))}
       </div>
-      {loading && <p className="login-loader">Tekshirilmoqda...</p>}
+      {loading && <div className="login-loader"></div>}
     </div>
   );
 };

@@ -48,7 +48,7 @@ function recomindation() {
   return (
     <div className="recomindation">
       <div className="recom-title">
-        <h2>Salom</h2>
+        <h2>Trentdagi mahsulotlar</h2>
       </div>
       {mahsulotlar.map((item) => (
         <div className="recom-product" key={item.id}>

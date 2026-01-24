@@ -201,9 +201,9 @@ function Home() {
               <div className="product-card__details">
                 <div className="product-card__price">
                   <div className="product-card__title">{m.title}</div>
-                  <span className="card-price">
-                    {m.narx.toLocaleString()} so'm
-                  </span>
+                  <div className="card-price">
+                    <span>{m.narx.toLocaleString()} so'm</span>
+                  </div>
                 </div>
 
                 <div className="product-card__cart">

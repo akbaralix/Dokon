@@ -149,7 +149,9 @@ function Savat() {
               <div className="summary-heading">Buyurtmangiz</div>
             </div>
             <div className="summary-price-options">
-              <div className="text__summary-product">Mahsulotlar: {2}</div>
+              <div className="text__summary-product">
+                Mahsulotlar: {cartItems.length}
+              </div>
               <div className="summary-price">
                 {cartItems
                   .reduce((total, item) => total + item.narx * item.quantity, 0)
