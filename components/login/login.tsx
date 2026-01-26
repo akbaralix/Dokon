@@ -43,6 +43,8 @@ const Login: React.FC = () => {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("userName", data.user.firstName); // Ismi
+        localStorage.setItem("userPhone", data.user.phone); // Telefon raqami
         toast.success(`Xush kelibsiz, ${data.user.firstName}!`);
         window.location.href = "/profil";
       } else {

@@ -1,9 +1,10 @@
+@import url(https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;800;900&display=swap);
+
 .user-profil {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  /* border: 1px solid white; */
 }
 .profil {
   display: flex;
@@ -23,6 +24,7 @@
   width: 100%;
   height: 100%;
 }
+
 .user-title {
   font-size: 25px;
 }
@@ -61,18 +63,30 @@
   align-items: center;
   text-align: center;
   justify-content: center;
-  margin-top: 200px;
+  margin-top: 100px;
 }
+.error-container img {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 50px;
+}
+
 .error-container h2 {
   font-size: 27px;
+  line-height: 30px;
+  font-weight: 600;
   font-family: "Inter";
+}
+.error-container p {
+  font-size: 15px;
+  margin-top: 5px;
 }
 .error-container button {
   background-color: #2d2dc0;
-  padding: 10px 25px;
+  padding: 10px 35px;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 10px;
   font-family:
     system-ui,
     -apple-system,
@@ -103,17 +117,7 @@
   margin-top: 100px;
   gap: 0.6em;
 }
-.avatar-loader {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: rgb(109, 109, 109);
-}
-.user-title_loader {
-  width: 100px;
-  height: 20px;
-  background-color: rgb(109, 109, 109);
-}
+
 .order-continer_loader {
   display: flex;
   align-items: center;
@@ -137,9 +141,131 @@
 .order-continer_btn {
   border-radius: 15px;
   padding: 22px;
-
   width: 200px;
   background-color: rgb(109, 109, 109);
+}
+.dark-mode {
+  color: #e0e0e0;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.user-username {
+  color: #a0a0a0;
+  font-size: 14px;
+}
+
+.section-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.order-card {
+  background: #1e1e1e;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #2c2c2c;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #2c2c2c;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.status-badge {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.status-badge.kutilmoqda {
+  background: #332b00;
+  color: #ffcc00;
+}
+.status-badge.tasdiqlandi {
+  background: #0a2e14;
+  color: #2ecc71;
+}
+.status-badge.bekor-qilindi {
+  background: #2d0a0a;
+  color: #e74c3c;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #b0b0b0;
+  margin-bottom: 5px;
+}
+.total-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 14px;
+  color: #b0b0b0;
+  margin-bottom: 5px;
+}
+.total-amount {
+  color: #8120ff;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.cancel-btn {
+  background: #2c2c2c;
+  margin-top: 10px;
+  color: #ff4d4d;
+  border: 1px solid #3d3d3d;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* Skeleton Animation */
+.skeleton {
+  background: linear-gradient(90deg, #1e1e1e 25%, #2c2c2c 50%, #1e1e1e 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.avatar-loader {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.user-title_loader {
+  width: 150px;
+  height: 24px;
+  margin-top: 10px;
+}
+.order-card-loader {
+  height: 120px;
+  width: 100%;
+  margin-top: 15px;
 }
 @media (max-width: 750px) {
   .useravatar {
@@ -148,6 +274,9 @@
   }
   .user-title {
     font-size: 18px;
+  }
+  .orders-list {
+    margin-bottom: 70px;
   }
   .order-continer {
     max-width: 450px;

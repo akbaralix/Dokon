@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { TbBasketHeart, TbPlus, TbMinus, TbTrash } from "react-icons/tb";
 import "./savat.css";
+import toast from "react-hot-toast";
 
 interface Product {
   id: number;
@@ -15,6 +16,7 @@ interface Product {
 function Savat() {
   const [cartItems, setCartItems] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     const data = localStorage.getItem("mycart");
@@ -58,10 +60,86 @@ function Savat() {
     );
     setCartItems(updatedItems);
   };
-  const handleCheckout = () => {
+
+  const handleCheckout = async () => {
+    if (isPending) return;
     const token = localStorage.getItem("token");
     if (!token) {
+      toast.error("Iltimos, avval tizimga kiring!");
       return (window.location.href = "/login");
+    }
+
+    setIsPending(true);
+    const totalSum = cartItems.reduce(
+      (total, item) => total + item.narx * item.quantity,
+      0,
+    );
+
+    try {
+      // 1. BAZAGA SAQLASH (Sizning kodingiz)
+      const dbResponse = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ items: cartItems, totalPrice: totalSum }),
+      });
+
+      if (!dbResponse.ok) throw new Error("Buyurtmani saqlashda xatolik!");
+
+      const tgsentToken = "8201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
+      const chatId = "907402803";
+      const phonenumber = localStorage.getItem("userPhone") || "Noma'lum";
+      const username = localStorage.getItem("userName") || "Noma'lum";
+
+      const dbResult = await dbResponse.json(); // Bazaga saqlanganda kelgan buyurtma ma'lumoti
+      const orderId = dbResult.order._id;
+
+      const itemsList = cartItems
+        .map(
+          (item) =>
+            `📦 ${item.title}\n🔢 ${item.quantity} dona - ${item.narx.toLocaleString()} so'm`,
+        )
+        .join("\n\n");
+
+      const fullMessage = `🆕 **YANGI BUYURTMA**\n\n${itemsList}\n\n💰Foydalanuvchi: ${username}\n📞 Telefon: ${phonenumber}\n\n💰 **JAMI: ${totalSum.toLocaleString()} so'm**`;
+
+      // sendPhoto emas, sendMessage ishlating (chunki rasm Base64 bo'lishi mumkin)
+      await fetch(`https://api.telegram.org/bot${tgsentToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: fullMessage,
+          parse_mode: "Markdown",
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: "✅ Tasdiqlash",
+                  callback_data: `confirm_${orderId}`,
+                },
+              ],
+              [
+                {
+                  text: "❌ Bekor qilish",
+                  callback_data: `cancel_${orderId}`,
+                },
+              ],
+            ],
+          },
+        }),
+      });
+
+      toast.success("Buyurtmangiz qabul qilindi!");
+      localStorage.removeItem("mycart");
+      setCartItems([]);
+    } catch (error) {
+      console.error("Telegram xatosi:", error);
+      toast.error("Xatolik yuz berdi!");
+    } finally {
+      setIsPending(false);
     }
   };
 
@@ -73,8 +151,8 @@ function Savat() {
           alt="Savat bo'sh"
           className="empty-page_img"
         />
-        <h2>Savatda hozircha mahsulot yo'q</h2>
-        <p>Bosh sahifadagi mahsulotlar kombinatsiyasidan boshlang</p>
+        <h2>Savatda hozircha mahsulot yo'q 😓</h2>
+        <p>Hozir haridni boshlash uchun pastdagi tugamani bosing</p>
         <a href="/" className="card-button">
           Bosh sahifa
         </a>
@@ -84,8 +162,8 @@ function Savat() {
 
   return (
     <div className="savat-container">
-      <h1>
-        <span>Savatingiz, </span> <span>{cartItems.length} mahsulot</span>
+      <h1 className="cart-title__header">
+        <span>Savatingizda: </span> <span>{cartItems.length} mahsulot</span>
       </h1>
       <div className="cart-container">
         <div className="cart-products-container">
@@ -150,7 +228,8 @@ function Savat() {
             </div>
             <div className="summary-price-options">
               <div className="text__summary-product">
-                Mahsulotlar: {cartItems.length}
+                Jami mahsulotlar:{" "}
+                {cartItems.reduce((total, item) => total + item.quantity, 0)}
               </div>
               <div className="summary-price">
                 {cartItems
@@ -160,7 +239,17 @@ function Savat() {
               </div>
             </div>
             <div className="summary-actions">
-              <button onClick={() => handleCheckout()}>Rasmiylashtirish</button>
+              <button
+                onClick={() => handleCheckout()}
+                disabled={isPending}
+                className={`checkout-btn ${isPending ? "loading" : ""}`}
+              >
+                {isPending ? (
+                  <div className="btn-spinner"></div>
+                ) : (
+                  "Rasmiylashtirish"
+                )}
+              </button>{" "}
             </div>
           </div>
         </div>

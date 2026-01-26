@@ -1,68 +1,90 @@
 "use client";
 import { useState, useEffect } from "react";
-import "./sevimli.css";
-import { TbBasketHeart } from "react-icons/tb";
+import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
 import { CiHeart } from "react-icons/ci";
+import { updateQuantity } from "@/utlis/addcart"; // Yo'l to'g'riligini tekshiring
+import "./sevimli.css";
+import "../Home/home.css";
+
+// Mahsulot turi (Interface)
+interface Product {
+  id: string | number;
+  title: string;
+  rasm: string;
+  narx: number;
+  quantity?: number;
+}
 
 function Sevimli() {
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState<Product[]>([]);
+  const [cart, setCart] = useState<Product[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // LocalStorage dan olish
+  // 1. LocalStorage dan ma'lumotlarni yuklash (Faqat Client-side da)
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(stored);
+    const storedFavs = localStorage.getItem("favorites");
+    const storedCart = localStorage.getItem("mycart");
+
+    if (storedFavs) setFavorites(JSON.parse(storedFavs));
+    if (storedCart) setCart(JSON.parse(storedCart));
+
+    setIsLoaded(true); // Gidratatsiya xatosini oldini olish uchun
   }, []);
 
-  // Favoritdan o‘chirish yoki qo‘shish
-  const toggleFavorite = (product) => {
-    let updated;
-
-    if (favorites.find((item) => item.id === product.id)) {
-      updated = favorites.filter((item) => item.id !== product.id);
-    } else {
-      updated = [...favorites, product];
+  // 2. Savat o'zgarganda LocalStorage-ni yangilash
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("mycart", JSON.stringify(cart));
     }
+  }, [cart, isLoaded]);
 
+  // Favoritdan o‘chirish
+  const toggleFavorite = (product: Product) => {
+    const updated = favorites.filter((item) => item.id !== product.id);
     setFavorites(updated);
     localStorage.setItem("favorites", JSON.stringify(updated));
   };
 
-  if (!favorites || favorites.length === 0)
+  // Agar sahifa hali yuklanmagan bo'lsa (SSR uchun)
+  if (!isLoaded) return null;
+
+  // Bo'sh holat
+  if (favorites.length === 0) {
     return (
       <div className="empty-page">
         <img
           className="empty-page_img"
           src="/_Image_1-removebg-preview.png"
-          alt=""
+          alt="Bo'sh"
         />
         <h1 className="empty-page_title">
-          Bu yerda sevimli tovarlaringizni saqlab qoʻyamiz
+          Bu yerda sevimli tovarlaringiz saqlanadi
         </h1>
         <p className="empty-page_text">
-          Odatda buyurtma qiladigan yoki keyinroq sotib olishni istagan
-          tovarlarda ♡ belgisini bosing
+          Odatda buyurtma qiladigan tovarlarda ♡ belgisini bosing
         </p>
       </div>
     );
+  }
 
   return (
     <div className="favorites-products">
       {favorites.map((item) => {
-        const isFav = true; // Sevimli sahifada bu mahsulot allaqachon sevimli
+        // Savatda bor yoki yo'qligini tekshirish
+        const cartItem = cart.find((c) => c.id === item.id);
 
         return (
           <div className="product-card_sevimli" key={item.id}>
             <div className="image-wrapper">
-              <img src={item.rasm} alt="" />
+              <img src={item.rasm} alt={item.title} />
             </div>
 
-            {/* Yurak tugmasi */}
             <div className="product-card__actions">
               <button
                 onClick={() => toggleFavorite(item)}
-                style={{ color: isFav ? "red" : "gray" }}
+                style={{ color: "red" }}
               >
-                <CiHeart />
+                <CiHeart size={25} />
               </button>
             </div>
 
@@ -70,17 +92,40 @@ function Sevimli() {
               <div className="product-card__title">{item.title}</div>
               <div className="product-card__price">
                 <span className="card-price">
-                  {Number(item.narx).toLocaleString() + " so'm"}
+                  {Number(item.narx).toLocaleString()} so'm
                 </span>
               </div>
             </div>
 
-            <button className="card-button">
-              <div className="card-button-content">
-                <TbBasketHeart />
-                <span>Savatga</span>
-              </div>
-            </button>
+            <div className="product-card__cart">
+              {cartItem ? (
+                <div className="quantity-controls">
+                  <button
+                    onClick={() => updateQuantity(item, -1, cart, setCart)}
+                    className="q-btn"
+                  >
+                    <TbMinus />
+                  </button>
+                  <span className="q-num">{cartItem.quantity}</span>
+                  <button
+                    onClick={() => updateQuantity(item, 1, cart, setCart)}
+                    className="q-btn"
+                  >
+                    <TbPlus />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => updateQuantity(item, 1, cart, setCart)}
+                  className="add-btn"
+                >
+                  <div className="card-button-content">
+                    <TbBasketHeart />
+                    <span>Savatga</span>
+                  </div>
+                </button>
+              )}
+            </div>
           </div>
         );
       })}

@@ -23,7 +23,9 @@ function Navbar() {
     <div>
       <div className="navbar">
         <div className="logo">
-          <Link href="/">LOGO</Link>
+          <Link href="/">
+            <img src="/anor-market.png" alt="" />
+          </Link>
         </div>
 
         <div className="search-header-parts">

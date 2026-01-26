@@ -8,19 +8,18 @@
   text-align: center;
 }
 .empty-page_img {
-  width: 180px;
-  height: 180px;
+  width: 280px;
+  height: 280px;
 }
 .empty-page_title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 28px;
 }
 .empty-page_text {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
-  letter-spacing: 0;
-  line-height: 22px;
+  line-height: 25px;
   text-decoration: none;
   margin-top: 10px;
 }
@@ -111,7 +110,7 @@
 @media (max-width: 800px) {
   .favorites-products {
     margin-bottom: 70px;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
   .image-wrapper {
     height: 270px;

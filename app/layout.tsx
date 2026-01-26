@@ -4,8 +4,8 @@ import Navbar from "@/components/navbar/navbar";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Market",
-  description: "Online kiyim dokoni",
+  title: "Anor Market",
+  description: "Online dokoni",
 };
 
 export default function RootLayout({

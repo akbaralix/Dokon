@@ -5,11 +5,12 @@ import { GrPrevious, GrNext } from "react-icons/gr";
 import { CiHeart } from "react-icons/ci";
 import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
 import Recomindation from "../recomindation/recomindation";
-import toast from "react-hot-toast";
+import { updateQuantity } from "@/utlis/addcart";
 import "./home.css";
 
+// Interface mahsulot modeliga moslangan
 interface Product {
-  id: number;
+  id: string | number; // MongoDB id string bo'ladi
   narx: number;
   title: string;
   rasm: string;
@@ -17,44 +18,9 @@ interface Product {
 }
 
 function Home() {
-  const [mahsulotlar] = useState<Product[]>([
-    {
-      id: 1,
-      narx: 120000,
-      title: "Bolalar uchun yangi yil sovgasi...",
-      rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
-    },
-    {
-      id: 2,
-      narx: 120000,
-      title: "Bolalar uchun yangi yil sovgasi...",
-      rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
-    },
-    {
-      id: 3,
-      narx: 120000,
-      title: "Bolalar uchun yangi yil sovgasi...",
-      rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
-    },
-    {
-      id: 4,
-      narx: 120000,
-      title: "Bolalar uchun yangi yil sovgasi...",
-      rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
-    },
-    {
-      id: 5,
-      narx: 120000,
-      title: "Bolalar uchun yangi yil sovgasi...",
-      rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
-    },
-    {
-      id: 6,
-      narx: 120000,
-      title: "Bolalar uchun yangi yil sovgasi...",
-      rasm: "https://images.uzum.uz/d4n7oi5v2sjnqk4ke160/t_product_540_high.jpg",
-    },
-  ]);
+  // Statik ma'lumotlar o'rniga bo'sh massiv
+  const [mahsulotlar, setMahsulotlar] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const bannerImg: string[] = [
     "https://images.uzum.uz/d4n0q5uj76olj6nfdlvg/main_page_banner.jpg",
@@ -64,28 +30,45 @@ function Home() {
 
   const [current, setCurrent] = useState<number>(0);
 
-  const [favorites, setFavorites] = useState<Product[]>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("favorites");
-      return stored ? JSON.parse(stored) : [];
-    }
-    return [];
-  });
+  // --- LOCALSTORAGE LOGIKASI ---
+  const [favorites, setFavorites] = useState<Product[]>([]);
+  const [cart, setCart] = useState<Product[]>([]);
 
-  const [cart, setCart] = useState<Product[]>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("mycart");
-      return stored ? JSON.parse(stored) : [];
-    }
-    return [];
-  });
-
+  // 1. Dastlabki yuklash (Baza va LocalStorage)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev === bannerImg.length - 1 ? 0 : prev + 1));
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [bannerImg.length]);
+    // Bazadan mahsulotlarni olish
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/products");
+        const data = await res.json();
+
+        console.log("Bazadan kelgan xom ma'lumot:", data);
+
+        const productsArray = data.produts || data.products || [];
+
+        if (Array.isArray(productsArray)) {
+          const formattedData = productsArray.map((p: any) => ({
+            id: p._id || p.productId || Math.random(),
+            title: p.title || "Nomsiz mahsulot",
+            narx: p.narx || 0,
+            rasm: p.rasm || "",
+          }));
+          setMahsulotlar(formattedData);
+        }
+      } catch (error) {
+        console.error("Xato yuz berdi:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+
+    const storedFavs = localStorage.getItem("favorites");
+    const storedCart = localStorage.getItem("mycart");
+    if (storedFavs) setFavorites(JSON.parse(storedFavs));
+    if (storedCart) setCart(JSON.parse(storedCart));
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
@@ -103,45 +86,24 @@ function Home() {
     }
   };
 
-  const updateQuantity = (product: Product, delta: number): void => {
-    const existingItem = cart.find((item) => item.id === product.id);
+  const bannerNext = () =>
+    setCurrent(current === bannerImg.length - 1 ? 0 : current + 1);
+  const bannerPrev = () =>
+    setCurrent(current === 0 ? bannerImg.length - 1 : current - 1);
 
-    if (existingItem) {
-      const newQuantity = (existingItem.quantity || 1) + delta;
-
-      if (newQuantity <= 0) {
-        setCart(cart.filter((item) => item.id !== product.id));
-      } else {
-        setCart(
-          cart.map((item) =>
-            item.id === product.id ? { ...item, quantity: newQuantity } : item,
-          ),
-        );
-      }
-    } else if (delta > 0) {
-      setCart([...cart, { ...product, quantity: 1 }]);
-      toast.success("Mahsulot savatga qo'shildi!");
-    }
-  };
+  useEffect(() => {
+    const interval = setInterval(bannerNext, 8000);
+    return () => clearInterval(interval);
+  }, [current]);
 
   return (
     <div>
       <div className="banner-block">
         <div className="banner-navigation">
-          <button
-            className="slider-button prev"
-            onClick={() =>
-              setCurrent(current === 0 ? bannerImg.length - 1 : current - 1)
-            }
-          >
+          <button className="slider-button prev" onClick={bannerPrev}>
             <GrPrevious />
           </button>
-          <button
-            className="slider-button next"
-            onClick={() =>
-              setCurrent(current === bannerImg.length - 1 ? 0 : current + 1)
-            }
-          >
+          <button className="slider-button next" onClick={bannerNext}>
             <GrNext />
           </button>
         </div>
@@ -152,15 +114,13 @@ function Home() {
           {bannerImg.map((_, index) => (
             <span
               key={index}
-              className={
-                "swiper-pagination-bullet " +
-                (index === current ? "swiper-pagination-bullet-active" : "")
-              }
+              className={`swiper-pagination-bullet ${index === current ? "swiper-pagination-bullet-active" : ""}`}
             ></span>
           ))}
         </div>
       </div>
 
+      {/* PROMO SECTION */}
       <div className="promo-wrapper">
         {[1, 2, 3, 4].map((item) => (
           <div className="promo-item-wrapper" key={item}>
@@ -173,6 +133,7 @@ function Home() {
         ))}
       </div>
 
+      {/* PRODUCTS SECTION */}
       <div className="title-text">
         <h2>Mashhur</h2>
         <span style={{ marginTop: 7, fontSize: 17 }}>
@@ -180,66 +141,92 @@ function Home() {
         </span>
       </div>
 
-      <div className="products">
-        {mahsulotlar.map((m) => {
-          const isFav = favorites.some((item) => item.id === m.id);
-          const cartItem = cart.find((item) => item.id === m.id);
-
-          return (
-            <div className="product-card" key={m.id}>
-              <div className="image-wrapper">
-                <img src={m.rasm} alt={m.title} />
-                <div className="product-card__actions">
-                  <button
-                    onClick={() => toggleFavorite(m)}
-                    style={{ color: isFav ? "red" : "gray" }}
-                  >
-                    <CiHeart size={24} />
-                  </button>
-                </div>
-              </div>
-              <div className="product-card__details">
-                <div className="product-card__price">
-                  <div className="product-card__title">{m.title}</div>
-                  <div className="card-price">
-                    <span>{m.narx.toLocaleString()} so'm</span>
-                  </div>
-                </div>
-
-                <div className="product-card__cart">
-                  {cartItem ? (
-                    <div className="quantity-controls">
-                      <button
-                        onClick={() => updateQuantity(m, -1)}
-                        className="q-btn"
-                      >
-                        <TbMinus />
-                      </button>
-                      <span className="q-num">{cartItem.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(m, 1)}
-                        className="q-btn"
-                      >
-                        <TbPlus />
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => updateQuantity(m, 1)}
-                      className="add-btn"
-                    >
-                      <div className="card-button-content">
-                        <TbBasketHeart />
-                        <span>Savatga</span>
-                      </div>
-                    </button>
-                  )}
-                </div>
+      {loading ? (
+        <div className="loader-wrapper">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((loader) => (
+            <div key={loader} className="loading-state">
+              <div className="loading-container">
+                <div className="praduct_loader-item"></div>
+                <div className="loader_text-item"></div>
+                <div className="loader_text-item"></div>
+                <div className="loader_button-item"></div>
               </div>
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="products">
+          {mahsulotlar.length > 0 ? (
+            mahsulotlar.map((m) => {
+              const isFav = favorites.some((item) => item.id === m.id);
+              const cartItem = cart.find((item) => item.id === m.id);
+
+              return (
+                <div className="product-card" key={m.id}>
+                  <div className="image-wrapper">
+                    <img src={m.rasm} alt={m.title} />
+                    <div className="product-card__actions">
+                      <button
+                        onClick={() => toggleFavorite(m)}
+                        style={{ color: isFav ? "red" : "gray" }}
+                      >
+                        <CiHeart size={24} />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="product-card__details">
+                    <div className="product-card__price">
+                      <div className="product-card__title">{m.title}</div>
+                      <div className="card-price">
+                        <span>{m.narx.toLocaleString()} so'm</span>
+                      </div>
+                    </div>
+
+                    <div className="product-card__cart">
+                      {cartItem ? (
+                        <div className="quantity-controls">
+                          <button
+                            onClick={() => updateQuantity(m, -1, cart, setCart)}
+                            className="q-btn"
+                          >
+                            <TbMinus />
+                          </button>
+                          <span className="q-num">{cartItem.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(m, 1, cart, setCart)}
+                            className="q-btn"
+                          >
+                            <TbPlus />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => updateQuantity(m, 1, cart, setCart)}
+                          className="add-btn"
+                        >
+                          <div className="card-button-content">
+                            <TbBasketHeart />
+                            <span>Savatga</span>
+                          </div>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="error-praduct_message">
+              <h3>Mahsulotlar topilmadi</h3>
+              <p>Iltimos, keyinroq qayta urinib ko'ring.</p>
+              <button onClick={() => window.location.reload()}>
+                Qayta yuklash
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="title-text">
         <h2>Tavsiya qilamiz</h2>
         <span style={{ marginTop: 7, fontSize: 17 }}>
