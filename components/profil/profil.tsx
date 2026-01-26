@@ -19,10 +19,10 @@ const Profil: React.FC = () => {
 
       try {
         const [userRes, ordersRes] = await Promise.all([
-          fetch("http://localhost:5000/profile", {
+          fetch("https://anor-market.onrender.com/profile", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch("http://localhost:5000/api/my-orders", {
+          fetch("https://anor-market.onrender.com/api/my-orders", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -51,10 +51,13 @@ const Profil: React.FC = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `https://anor-market.onrender.com/api/orders/${orderId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       const data = await res.json();
 
