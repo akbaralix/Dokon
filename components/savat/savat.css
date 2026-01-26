@@ -130,6 +130,11 @@
 }
 
 .info-container p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* faqat 2 qator */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 14px;
   line-height: 1.4;
 }
@@ -287,7 +292,6 @@
   .cart-sum {
     position: static;
     margin-bottom: 30px;
-    /* border: 0; */
   }
 
   .image-container {
@@ -305,7 +309,7 @@
     position: absolute;
   }
   .cart-praduct_price {
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1.2;
   }
   .cart-quantity-controls button {

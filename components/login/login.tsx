@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   const submitOTP = async (code: string): Promise<void> => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/verify", {
+      const res = await fetch("https://anor-market.onrender.com//verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),

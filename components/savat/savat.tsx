@@ -77,14 +77,17 @@ function Savat() {
 
     try {
       // 1. BAZAGA SAQLASH (Sizning kodingiz)
-      const dbResponse = await fetch("http://localhost:5000/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const dbResponse = await fetch(
+        "https://anor-market.onrender.com/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ items: cartItems, totalPrice: totalSum }),
         },
-        body: JSON.stringify({ items: cartItems, totalPrice: totalSum }),
-      });
+      );
 
       if (!dbResponse.ok) throw new Error("Buyurtmani saqlashda xatolik!");
 
@@ -184,7 +187,9 @@ function Savat() {
                   </div>
                   <div className="info-container">
                     <p>{item.title}</p>
-                    <span>{item.quantity} dona</span>
+                    <span style={{ fontWeight: 700, marginTop: 7 }}>
+                      {item.quantity} dona
+                    </span>
                     <span className="cart-praduct_price">
                       {(item.quantity * item.narx).toLocaleString()} so'm
                     </span>

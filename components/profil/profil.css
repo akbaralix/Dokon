@@ -162,10 +162,8 @@
 }
 
 .order-card {
-  background: #1e1e1e;
   border-radius: 12px;
   padding: 16px;
-  margin: 12px;
   margin-bottom: 15px;
   border: 1px solid #2c2c2c;
 }
@@ -200,16 +198,31 @@
 
 .order-item {
   display: flex;
+  gap: 15px;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 15px;
   color: #b0b0b0;
   margin-bottom: 5px;
+  border-bottom: 1px solid #2c2c2c;
+  padding-bottom: 10px;
+}
+.order-quantity__prof {
+  align-self: flex-start;
+  display: flex;
+  gap: 0.5em;
+  color: #b0b0b0;
+  background-color: #5d0cff;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 16px;
+  font-weight: 600;
 }
 .total-info {
   display: flex;
   align-items: center;
   gap: 0.5em;
   font-size: 14px;
+  font-weight: 600;
   color: #b0b0b0;
   margin-bottom: 5px;
 }

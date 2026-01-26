@@ -93,10 +93,8 @@ app.post("/verify", async (req, res) => {
   }
 });
 
-// ================= PROFILE (Auth kerak) =====================
 app.get("/profile", auth, async (req, res) => {
   try {
-    // req.user auth middleware'dan keladi
     const user = await User.findOne({ telegramId: req.user.telegramId });
     if (!user)
       return res.status(404).json({ message: "Foydalanuvchi topilmadi!" });
@@ -105,14 +103,12 @@ app.get("/profile", auth, async (req, res) => {
     res.status(500).json({ message: "Server xatoligi!" });
   }
 });
-// Buyurtma yaratish (Auth middleware qo'shildi)
 app.post("/api/orders", auth, async (req, res) => {
   try {
     const { items, totalPrice } = req.body;
 
-    // req.user auth middleware'dan keladi (jwt dekod qilingan holatda)
     const newOrder = new Order({
-      userId: req.user.telegramId, // Endi bu o'sha userga bog'lanadi
+      userId: req.user.telegramId,
       items: items,
       totalAmount: totalPrice,
       status: "kutilmoqda",

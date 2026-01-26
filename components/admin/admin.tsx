@@ -47,9 +47,9 @@ function Admin() {
   };
 
   const handleSubmit = async () => {
-    if (title.length > 100 || title.length < 300) {
+    if (title.length < 100 || title.length > 300) {
       return toast.error(
-        "Mahsulot nomi 100 dan kam yoki 300 dan ko'p bo'lmasligi kerak!",
+        "Mahsulot nomi 100 dan kam yoki 300 dan ko‘p bo‘lmasligi kerak!",
       );
     }
     if (!title || !price || !image)

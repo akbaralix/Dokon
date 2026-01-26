@@ -141,7 +141,9 @@ const Profil: React.FC = () => {
                   {order.items.map((item: any, idx: number) => (
                     <div key={idx} className="order-item">
                       <span>{item.title}</span>
-                      <span>{item.quantity} dona</span>
+                      <span className="order-quantity__prof">
+                        <span>{item.quantity}</span> <p>dona</p>
+                      </span>
                     </div>
                   ))}
                 </div>
