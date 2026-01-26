@@ -4,7 +4,7 @@ import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
 import { CiHeart } from "react-icons/ci";
 import { updateQuantity } from "@/utlis/addcart"; // Yo'l to'g'riligini tekshiring
 import "./sevimli.css";
-import "../Home/home.css";
+import "../home/home.css";
 
 // Mahsulot turi (Interface)
 interface Product {
