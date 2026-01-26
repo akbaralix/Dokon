@@ -157,11 +157,10 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use("/_next", express.static(path.join(__dirname, "../.next")));
 
 // AGAR yuqoridagi API'lardan birontasi bo'lmasa, FRONTENDNI qaytaradi
-app.get("*", (req, res) => {
+app.get("(.*)", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../.next/server/app/index.html"), (err) => {
     if (err) {
-      // Agar Next.js fayli topilmasa, oddiy xabar chiqaradi
-      res.status(200).send("Backend ishlayapti, lekin Frontend fayllari topilmadi. Build jarayonini tekshiring.");
+      res.status(200).send("Backend ishlayapti, lekin Frontend fayllari topilmadi.");
     }
   });
 });
@@ -169,3 +168,4 @@ app.get("*", (req, res) => {
 // ================= SERVER START =====================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
