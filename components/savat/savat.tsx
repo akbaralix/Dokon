@@ -233,7 +233,7 @@ function Savat() {
             </div>
             <div className="summary-price-options">
               <div className="text__summary-product">
-                Jami mahsulotlar:{" "}
+                Jami mahsulotlar:
                 {cartItems.reduce((total, item) => total + item.quantity, 0)}
               </div>
               <div className="summary-price">

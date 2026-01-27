@@ -20,9 +20,11 @@ const Profil: React.FC = () => {
       try {
         const [userRes, ordersRes] = await Promise.all([
           fetch("https://anor-market.onrender.com/profile", {
+            cache: "force-cache",
             headers: { Authorization: `Bearer ${token}` },
           }),
           fetch("https://anor-market.onrender.com/api/my-orders", {
+            cache: "force-cache",
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -53,7 +55,9 @@ const Profil: React.FC = () => {
       const token = localStorage.getItem("token");
       const res = await fetch(
         `https://anor-market.onrender.com/api/orders/${orderId}`,
+
         {
+          cache: "force-cache",
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         },

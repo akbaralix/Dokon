@@ -6,6 +6,7 @@ import { CiHeart } from "react-icons/ci";
 import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
 import Recomindation from "../recomindation/recomindation";
 import { updateQuantity } from "@/utlis/addcart";
+import Link from "next/link";
 import "./home.css";
 
 // Interface mahsulot modeliga moslangan
@@ -41,11 +42,12 @@ function Home() {
       try {
         const res = await fetch(
           "https://anor-market.onrender.com/api/products",
+          {
+            cache: "force-cache",
+          },
         );
+
         const data = await res.json();
-
-        console.log("Bazadan kelgan xom ma'lumot:", data);
-
         const productsArray = data.produts || data.products || [];
 
         if (Array.isArray(productsArray)) {
@@ -159,61 +161,79 @@ function Home() {
       ) : (
         <div className="products">
           {mahsulotlar.length > 0 ? (
-            mahsulotlar.map((m) => {
-              const isFav = favorites.some((item) => item.id === m.id);
-              const cartItem = cart.find((item) => item.id === m.id);
+            mahsulotlar.map((item) => {
+              const isFav = favorites.some((f) => f.id === item.id);
+              const cartItem = cart.find((c) => c.id === item.id);
 
               return (
-                <div className="product-card" key={m.id}>
-                  <div className="image-wrapper">
-                    <img src={m.rasm} alt={m.title} />
-                    <div className="product-card__actions">
-                      <button
-                        onClick={() => toggleFavorite(m)}
-                        style={{ color: isFav ? "red" : "gray" }}
-                      >
-                        <CiHeart size={24} />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="product-card__details">
-                    <div className="product-card__price">
-                      <div className="product-card__title">{m.title}</div>
-                      <div className="card-price">
-                        <span>{m.narx.toLocaleString()} so'm</span>
+                <div className="product-card" key={item.id}>
+                  <Link href={`/product/${item.id}`} key={item.id}>
+                    <div className="image-wrapper">
+                      <img src={item.rasm} alt={item.title} />
+                      <div className="product-card__actions">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleFavorite(item);
+                          }}
+                          style={{ color: isFav ? "red" : "gray" }}
+                        >
+                          <CiHeart size={24} />
+                        </button>
                       </div>
                     </div>
-
-                    <div className="product-card__cart">
-                      {cartItem ? (
-                        <div className="quantity-controls">
-                          <button
-                            onClick={() => updateQuantity(m, -1, cart, setCart)}
-                            className="q-btn"
-                          >
-                            <TbMinus />
-                          </button>
-                          <span className="q-num">{cartItem.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(m, 1, cart, setCart)}
-                            className="q-btn"
-                          >
-                            <TbPlus />
-                          </button>
+                    <div className="product-card__details">
+                      <div className="product-card__price">
+                        <div className="product-card__title">{item.title}</div>
+                        <div className="card-price">
+                          <span>{item.narx.toLocaleString()} so'm</span>
                         </div>
-                      ) : (
-                        <button
-                          onClick={() => updateQuantity(m, 1, cart, setCart)}
-                          className="add-btn"
-                        >
-                          <div className="card-button-content">
-                            <TbBasketHeart />
-                            <span>Savatga</span>
+                      </div>
+
+                      <div className="product-card__cart">
+                        {cartItem ? (
+                          <div className="quantity-controls">
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                updateQuantity(item, -1, cart, setCart);
+                              }}
+                              className="q-btn"
+                            >
+                              <TbMinus />
+                            </button>
+                            <span className="q-num">{cartItem.quantity}</span>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                updateQuantity(item, 1, cart, setCart);
+                              }}
+                              className="q-btn"
+                            >
+                              <TbPlus />
+                            </button>
                           </div>
-                        </button>
-                      )}
+                        ) : (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              updateQuantity(item, 1, cart, setCart);
+                            }}
+                            className="add-btn"
+                          >
+                            <div className="card-button-content">
+                              <TbBasketHeart />
+                              <span>Savatga</span>
+                            </div>
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               );
             })

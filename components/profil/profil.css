@@ -37,9 +37,9 @@
   width: 100%;
 }
 .order-continer h2 {
-  font-size: 34px;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  letter-spacing: 1.5px;
+  font-size: 30px;
+  font-weight: 600;
+  font-family: "poppins", sans-serif;
 }
 
 .order-continer p {

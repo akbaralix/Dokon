@@ -135,6 +135,7 @@
   border-radius: 50px;
 }
 .product-card__actions button {
+  outline: none;
   cursor: pointer;
   background: none;
 }
@@ -154,7 +155,7 @@
 }
 .product-card__title {
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* faqat 2 qator */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -172,6 +173,7 @@
   border-radius: 8px;
   background-color: #5619ee;
   cursor: pointer;
+  outline: none;
 }
 .product-card__cart button:hover {
   background-color: #7345e7;
@@ -191,6 +193,7 @@
   margin-top: 2px;
 }
 .quantity-controls button {
+  outline: none;
   display: flex;
   align-items: center;
   height: 33px;
