@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { TbBasketHeart, TbPlus, TbMinus, TbTrash } from "react-icons/tb";
 import "./savat.css";
 import toast from "react-hot-toast";
+import { parse } from "path";
 
 interface Product {
   id: number;
@@ -78,7 +79,7 @@ function Savat() {
     try {
       // 1. BAZAGA SAQLASH (Sizning kodingiz)
       const dbResponse = await fetch(
-        "https://anor-market.onrender.com/api/orders",
+        process.env.NEXT_PUBLIC_API_URL + "/api/orders",
         {
           method: "POST",
           headers: {
@@ -93,8 +94,14 @@ function Savat() {
 
       const tgsentToken = "8201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
       const chatId = "907402803";
-      const phonenumber = localStorage.getItem("userPhone") || "Noma'lum";
-      const username = localStorage.getItem("userName") || "Noma'lum";
+      const userData = localStorage.getItem("user");
+      const {
+        name: username,
+        phone: phonenumber,
+        id: userId,
+      } = userData
+        ? JSON.parse(userData)
+        : { name: "Noma'lum", phone: "Noma'lum", id: "Noma'lum" };
 
       const dbResult = await dbResponse.json(); // Bazaga saqlanganda kelgan buyurtma ma'lumoti
       const orderId = dbResult.order._id;
@@ -106,7 +113,7 @@ function Savat() {
         )
         .join("\n\n");
 
-      const fullMessage = `🆕 **YANGI BUYURTMA**\n\n${itemsList}\n\n💰Foydalanuvchi: ${username}\n📞 Telefon: ${phonenumber}\n\n💰 **JAMI: ${totalSum.toLocaleString()} so'm**`;
+      const fullMessage = `🆕 <b>YANGI BUYURTMA</b>\n\n${itemsList}\n\n💰Foydalanuvchi: <a href="tg://user?id=${userId}">${username}</a>\n📞 Telefon: ${phonenumber}\n\n💰 <b>JAMI: ${totalSum.toLocaleString()} so'm</b>`;
 
       // sendPhoto emas, sendMessage ishlating (chunki rasm Base64 bo'lishi mumkin)
       await fetch(`https://api.telegram.org/bot${tgsentToken}/sendMessage`, {
@@ -115,7 +122,7 @@ function Savat() {
         body: JSON.stringify({
           chat_id: chatId,
           text: fullMessage,
-          parse_mode: "Markdown",
+          parse_mode: "HTML",
           reply_markup: {
             inline_keyboard: [
               [

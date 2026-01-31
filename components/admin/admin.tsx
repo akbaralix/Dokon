@@ -8,7 +8,8 @@ function Admin() {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [isDragging, setIsDragging] = useState(false); // Sudrab kelinganda rang o'zgarishi uchun
+  const [isDragging, setIsDragging] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Rasmni qayta ishlash funksiyasi (Universal)
   const processFile = (file) => {
@@ -47,9 +48,9 @@ function Admin() {
   };
 
   const handleSubmit = async () => {
-    if (title.length < 100 || title.length > 300) {
+    if (title.length < 50 || title.length > 300) {
       return toast.error(
-        "Mahsulot nomi 100 dan kam yoki 300 dan ko‘p bo‘lmasligi kerak!",
+        "Mahsulot nomi 50 dan kam yoki 300 dan ko‘p bo‘lmasligi kerak!",
       );
     }
     if (!title || !price || !image)
@@ -58,11 +59,14 @@ function Admin() {
     const payload = { title, narx: Number(price), rasm: image };
 
     try {
-      const res = await fetch("https://anor-market.onrender.com/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/api/products",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
 
       if (res.ok) {
         toast.success("Mahsulot qo'shildi!");
@@ -112,7 +116,13 @@ function Admin() {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-        <button onClick={handleSubmit}>Qo'shish</button>
+        <button
+          onClick={handleSubmit}
+          disabled={isLoading}
+          className={`add-product-btn ${isLoading ? "loading" : ""}`}
+        >
+          {isLoading ? "Yuklanmoqda..." : "Qo'shish"}
+        </button>
       </div>
     </div>
   );

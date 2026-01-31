@@ -29,7 +29,7 @@ export default function ProductPage({ id }: { id: string }) {
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          "https://anor-market.onrender.com/api/products",
+          process.env.NEXT_PUBLIC_API_URL + "/api/products",
         );
         const result = await res.json();
         const productsArray = result.produts || result.products || [];
@@ -94,24 +94,30 @@ export default function ProductPage({ id }: { id: string }) {
                   {(data.narx * 1.2).toLocaleString()} so'm
                 </span>
               </div>
-
               <div className="p-delivery-tag">Yetkazib berish: 1 kunda</div>
-
               <div className="p-action-area">
                 {cartItem ? (
-                  <div className="p-qty-box">
+                  <div className="praduct-card__actions">
+                    <div className="p-qty-box">
+                      <button
+                        className="p-qty-btn"
+                        onClick={() => updateQuantity(data, -1, cart, setCart)}
+                      >
+                        <TbMinus size={20} />
+                      </button>
+                      <span className="p-qty-val">{cartItem.quantity}</span>
+                      <button
+                        className="p-qty-btn"
+                        onClick={() => updateQuantity(data, 1, cart, setCart)}
+                      >
+                        <TbPlus size={20} />
+                      </button>
+                    </div>
                     <button
-                      className="p-qty-btn"
-                      onClick={() => updateQuantity(data, -1, cart, setCart)}
+                      className="cart-added_btn"
+                      onClick={() => router.push("/savat")}
                     >
-                      <TbMinus size={20} />
-                    </button>
-                    <span className="p-qty-val">{cartItem.quantity}</span>
-                    <button
-                      className="p-qty-btn"
-                      onClick={() => updateQuantity(data, 1, cart, setCart)}
-                    >
-                      <TbPlus size={20} />
+                      Savatga o'tish
                     </button>
                   </div>
                 ) : (

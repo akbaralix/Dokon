@@ -31,17 +31,15 @@ function Home() {
 
   const [current, setCurrent] = useState<number>(0);
 
-  // --- LOCALSTORAGE LOGIKASI ---
   const [favorites, setFavorites] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
 
-  // 1. Dastlabki yuklash (Baza va LocalStorage)
   useEffect(() => {
     // Bazadan mahsulotlarni olish
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          "https://anor-market.onrender.com/api/products",
+          process.env.NEXT_PUBLIC_API_URL + "/api/products",
           {
             cache: "force-cache",
           },

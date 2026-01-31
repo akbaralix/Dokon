@@ -6,12 +6,13 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 // Modellar va Middleware
+
 import OTP from "./OTP.js";
 import User from "./models/user.js";
 import Order from "./models/order.js";
 import Product from "./models/praduct.js";
 import auth from "./auth.js";
-import "./index.js";
+// import "./index.js";
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ app.use(cors());
 const BOT_TOKEN =
   process.env.BOT_TOKEN || "8201270787:AAELpFwtJ7IYefjAIUtxEv39kyuU-jcbo2Y";
 const JWT_SECRET = process.env.JWT_SECRET || "maxfiy_kalit_soz_123";
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://...";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
   .connect(MONGO_URI)
@@ -55,19 +56,32 @@ app.post("/verify", async (req, res) => {
 
     // Avatar olish
     let avatar = null;
+
     try {
-      const { data: photoRes } = await axios.get(
-        `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos?user_id=${record.telegramId}&limit=1`,
+      const photoRes = await axios.get(
+        `https://api.telegram.org/bot${BOT_TOKEN}/getUserProfilePhotos`,
+        {
+          params: {
+            user_id: record.telegramId,
+            limit: 1,
+          },
+        },
       );
-      if (photoRes.result.total_count > 0) {
-        const fileId = photoRes.result.photos[0][0].file_id;
-        const { data: fileRes } = await axios.get(
-          `https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`,
+
+      if (photoRes.data.ok && photoRes.data.result.total_count > 0) {
+        const fileId = photoRes.data.result.photos[0][0].file_id;
+
+        const fileRes = await axios.get(
+          `https://api.telegram.org/bot${BOT_TOKEN}/getFile`,
+          {
+            params: { file_id: fileId },
+          },
         );
+
         avatar = `https://api.telegram.org/file/bot${BOT_TOKEN}/${fileRes.data.result.file_path}`;
       }
-    } catch (photoErr) {
-      console.error("Avatar olishda xato:", photoErr.message);
+    } catch (err) {
+      console.log("Avatar olishda xato:", err.message);
     }
 
     const user = await User.findOneAndUpdate(
@@ -76,6 +90,7 @@ app.post("/verify", async (req, res) => {
         firstName: info.first_name || "",
         lastName: info.last_name || "",
         username: info.username || "",
+        userId: info.id || "",
         avatar,
       },
       { upsert: true, new: true },
@@ -126,10 +141,8 @@ app.post("/api/orders", auth, async (req, res) => {
   }
 });
 
-// Foydalanuvchining buyurtmalarini olish
 app.get("/api/my-orders", auth, async (req, res) => {
   try {
-    // req.user.telegramId auth middleware-dan keladi
     const orders = await Order.find({ userId: req.user.telegramId }).sort({
       createdAt: -1,
     });
@@ -146,7 +159,6 @@ app.delete("/api/orders/:id", auth, async (req, res) => {
 
     const deletedOrder = await Order.findOneAndDelete({
       _id: orderId,
-      userId: telegramId,
     });
 
     if (!deletedOrder) {
@@ -162,17 +174,18 @@ app.delete("/api/orders/:id", auth, async (req, res) => {
     const deleteMessage = `
 🗑 **BUYURTMA O'CHIRILDI (BAZADAN)**
 ----------------------------
-👤 **Mijoz:** ${telegramId}
-🆔 **Order ID:** #${orderId}
-💰 **Summa:** ${deletedOrder.totalAmount.toLocaleString()} so'm
+👤 <b>Foydalanuvchi:</b> <a href="tg://user?id=${deletedOrder.userId}">${deletedOrder.userId}</a>
 
-⚠️ *Ushbu buyurtma foydalanuvchi tomonidan bekor qilindi va bazadan o'chirildi.*
+🆔 <b>Order ID:</b> #${orderId}
+💰 <b>Summa:</b> ${deletedOrder.totalAmount.toLocaleString()} so'm
+
+⚠️ <i>Ushbu buyurtma foydalanuvchi tomonidan bekor qilindi va bazadan o'chirildi.</i>
     `;
 
     await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       chat_id: ADMIN_CHAT_ID,
       text: deleteMessage,
-      parse_mode: "Markdown",
+      parse_mode: "HTML",
     });
 
     res.json({ success: true, message: "Buyurtma bazadan o'chirildi" });

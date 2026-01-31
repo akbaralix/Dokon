@@ -12,6 +12,7 @@ const Profil: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
+
       if (!token) {
         window.location.href = "/login";
         return;
@@ -19,15 +20,24 @@ const Profil: React.FC = () => {
 
       try {
         const [userRes, ordersRes] = await Promise.all([
-          fetch("https://anor-market.onrender.com/profile", {
-            cache: "force-cache",
-            headers: { Authorization: `Bearer ${token}` },
+          fetch(process.env.NEXT_PUBLIC_API_URL + "/profile", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }),
-          fetch("https://anor-market.onrender.com/api/my-orders", {
-            cache: "force-cache",
-            headers: { Authorization: `Bearer ${token}` },
+
+          fetch(process.env.NEXT_PUBLIC_API_URL + "/api/my-orders", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }),
         ]);
+
+        if (!userRes.ok || !ordersRes.ok) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+          return;
+        }
 
         const userData = await userRes.json();
         const ordersData = await ordersRes.json();
@@ -35,11 +45,12 @@ const Profil: React.FC = () => {
         setUser(userData.user);
         setOrders(ordersData.orders || []);
       } catch (err) {
-        toast.error("Ma'lumotlarni yuklashda xatolik!");
+        toast.error("Server bilan bog‘lanib bo‘lmadi");
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
@@ -54,7 +65,7 @@ const Profil: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `https://anor-market.onrender.com/api/orders/${orderId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}`,
 
         {
           cache: "force-cache",

@@ -12,6 +12,7 @@
 
 .savat-holder img {
   width: 200px;
+  height: 200px;
   margin-bottom: 20px;
   display: block;
   margin-left: auto;
@@ -21,12 +22,12 @@
 .savat-holder h2 {
   font-size: 24px;
   font-family: "Inter", sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 10px;
 }
 
 .savat-holder p {
-  color: #8b8e99;
+  color: #d8d6d6;
   font-size: 16px;
   margin-bottom: 20px;
 }
@@ -34,7 +35,7 @@
 .savat-holder a {
   background-color: #7000ff;
   color: white;
-  padding: 12px 40px;
+  padding: 10px 40px;
   border-radius: 10px;
   text-decoration: none;
   font-weight: 600;

@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   const submitOTP = async (code: string): Promise<void> => {
     setLoading(true);
     try {
-      const res = await fetch("https://anor-market.onrender.com//verify", {
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
@@ -43,9 +43,15 @@ const Login: React.FC = () => {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("userName", data.user.firstName); // Ismi
-        localStorage.setItem("userPhone", data.user.phone); // Telefon raqami
-        toast.success(`Xush kelibsiz, ${data.user.firstName}!`);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: data.user.firstName || "",
+            phone: data.user.phone || "",
+            id: data.user.userId || "",
+          }),
+        );
+
         window.location.href = "/profil";
       } else {
         toast.error(data.message || "Kod xato!");
