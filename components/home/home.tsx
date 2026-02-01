@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
 import { CiHeart } from "react-icons/ci";
+import { updateQuantity } from "@/utlis/addcart";
 import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
 import Recomindation from "../recomindation/recomindation";
-import { updateQuantity } from "@/utlis/addcart";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import "./home.css";
 
 // Interface mahsulot modeliga moslangan
@@ -33,6 +34,9 @@ function Home() {
 
   const [favorites, setFavorites] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
+
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
 
   useEffect(() => {
     // Bazadan mahsulotlarni olish
@@ -159,82 +163,92 @@ function Home() {
       ) : (
         <div className="products">
           {mahsulotlar.length > 0 ? (
-            mahsulotlar.map((item) => {
-              const isFav = favorites.some((f) => f.id === item.id);
-              const cartItem = cart.find((c) => c.id === item.id);
+            mahsulotlar
+              .filter(
+                (item) =>
+                  !search ||
+                  search === "0" ||
+                  item.title?.toLowerCase().includes(search.toLowerCase()),
+              )
 
-              return (
-                <div className="product-card" key={item.id}>
-                  <Link href={`/product/${item.id}`} key={item.id}>
-                    <div className="image-wrapper">
-                      <img src={item.rasm} alt={item.title} />
-                      <div className="product-card__actions">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            toggleFavorite(item);
-                          }}
-                          style={{ color: isFav ? "red" : "gray" }}
-                        >
-                          <CiHeart size={24} />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="product-card__details">
-                      <div className="product-card__price">
-                        <div className="product-card__title">{item.title}</div>
-                        <div className="card-price">
-                          <span>{item.narx.toLocaleString()} so'm</span>
+              .map((item) => {
+                const isFav = favorites.some((f) => f.id === item.id);
+                const cartItem = cart.find((c) => c.id === item.id);
+
+                return (
+                  <div className="product-card" key={item.id}>
+                    <Link href={`/product/${item.id}`} key={item.id}>
+                      <div className="image-wrapper">
+                        <img src={item.rasm} alt={item.title} />
+                        <div className="product-card__actions">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleFavorite(item);
+                            }}
+                            style={{ color: isFav ? "red" : "gray" }}
+                          >
+                            <CiHeart size={24} />
+                          </button>
                         </div>
                       </div>
+                      <div className="product-card__details">
+                        <div className="product-card__price">
+                          <div className="product-card__title">
+                            {item.title}
+                          </div>
+                          <div className="card-price">
+                            <span>{item.narx.toLocaleString()} so'm</span>
+                          </div>
+                        </div>
 
-                      <div className="product-card__cart">
-                        {cartItem ? (
-                          <div className="quantity-controls">
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                updateQuantity(item, -1, cart, setCart);
-                              }}
-                              className="q-btn"
-                            >
-                              <TbMinus />
-                            </button>
-                            <span className="q-num">{cartItem.quantity}</span>
+                        <div className="product-card__cart">
+                          {cartItem ? (
+                            <div className="quantity-controls">
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  updateQuantity(item, -1, cart, setCart);
+                                }}
+                                className="q-btn"
+                              >
+                                <TbMinus />
+                              </button>
+                              <span className="q-num">{cartItem.quantity}</span>
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  updateQuantity(item, 1, cart, setCart);
+                                }}
+                                className="q-btn"
+                              >
+                                <TbPlus />
+                              </button>
+                            </div>
+                          ) : (
                             <button
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 updateQuantity(item, 1, cart, setCart);
                               }}
-                              className="q-btn"
+                              className="add-btn"
                             >
-                              <TbPlus />
+                              <div className="card-button-content">
+                                <TbBasketHeart />
+                                <span>Savatga</span>
+                              </div>
                             </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              updateQuantity(item, 1, cart, setCart);
-                            }}
-                            className="add-btn"
-                          >
-                            <div className="card-button-content">
-                              <TbBasketHeart />
-                              <span>Savatga</span>
-                            </div>
-                          </button>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-              );
-            })
+                    </Link>
+                  </div>
+                );
+              })
           ) : (
             <div className="error-praduct_message">
               <h3>Mahsulotlar topilmadi</h3>
@@ -246,6 +260,10 @@ function Home() {
           )}
         </div>
       )}
+      {mahsulotlar.filter(
+        (item) =>
+          !search || item.title.toLowerCase().includes(search.toLowerCase()),
+      ).length === 0 && <p>Mahsulotlar topilmadi</p>}
 
       <div className="title-text">
         <h2>Tavsiya qilamiz</h2>

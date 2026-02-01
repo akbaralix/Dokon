@@ -6,6 +6,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { GrHomeRounded } from "react-icons/gr";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 import "./navbar.css";
@@ -13,6 +14,8 @@ import "./navbar.css";
 function Navbar() {
   const pathname = usePathname();
   const [isLogged, setIsLogged] = useState(false);
+  const [search, setSearch] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -24,14 +27,29 @@ function Navbar() {
       <div className="navbar">
         <div className="logo">
           <Link href="/">
-            <img src="/anor-market.png" alt="" />
+            <h2
+              style={{ fontSize: 30, fontFamily: "poppins", fontWeight: 600 }}
+            >
+              Logoo
+            </h2>
           </Link>
         </div>
 
         <div className="search-header-parts">
           <div className="input-line">
-            <input type="text" placeholder="Mahsulotlarni qidirish" />
-            <button className="button__search">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              type="text"
+              placeholder="Mahsulotlarni qidirish"
+            />
+            <button
+              onClick={() => {
+                if (!search.trim()) return;
+                router.push(`/?search=${search}`);
+              }}
+              className="button__search"
+            >
               <IoSearch />
             </button>
           </div>
@@ -69,11 +87,6 @@ function Navbar() {
         <Link href="/" className={pathname === "/" ? "active" : ""}>
           <GrHomeRounded />
           <span className="mobile-menu_title">Sahifa</span>
-        </Link>
-
-        <Link href="/search" className={pathname === "/search" ? "active" : ""}>
-          <IoSearch />
-          <span className="mobile-menu_title">Qidirish</span>
         </Link>
 
         <Link

@@ -12,7 +12,7 @@ import User from "./models/user.js";
 import Order from "./models/order.js";
 import Product from "./models/praduct.js";
 import auth from "./auth.js";
-// import "./index.js";
+import "./index.js";
 
 dotenv.config();
 
@@ -201,6 +201,7 @@ app.post("/api/products", async (req, res) => {
     const newProduct = new Product({
       productId: Date.now(),
       title,
+
       narx: Number(narx),
       rasm,
     });
