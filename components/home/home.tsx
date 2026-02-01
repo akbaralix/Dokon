@@ -34,9 +34,12 @@ function Home() {
 
   const [favorites, setFavorites] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
+  const [search, setSearch] = useState("");
 
-  const searchParams = useSearchParams();
-  const search = searchParams.get("search") || "";
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setSearch(params.get("search") || "");
+  }, []);
 
   useEffect(() => {
     // Bazadan mahsulotlarni olish
