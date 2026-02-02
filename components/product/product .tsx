@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
 import { updateQuantity } from "@/utlis/addcart";
+import router from "next/router";
 import "./product.css";
 
 interface ProductType {
