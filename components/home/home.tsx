@@ -6,8 +6,9 @@ import { CiHeart } from "react-icons/ci";
 import { updateQuantity } from "@/utlis/addcart";
 import { TbBasketHeart, TbPlus, TbMinus } from "react-icons/tb";
 import Recomindation from "../recomindation/recomindation";
+import { IoSearch } from "react-icons/io5";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import "./home.css";
 
 // Interface mahsulot modeliga moslangan
@@ -107,6 +108,25 @@ function Home() {
 
   return (
     <div>
+      <div className="search-row">
+        <div className="search-input-component">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            type="text"
+            placeholder="Mahsulotlarni qidirish"
+          />
+          <button
+            onClick={() => {
+              if (!search.trim()) return;
+              router.push(`/?search=${search}`);
+            }}
+            className="button__search"
+          >
+            <IoSearch />
+          </button>
+        </div>
+      </div>
       <div className="banner-block">
         <div className="banner-navigation">
           <button className="slider-button prev" onClick={bannerPrev}>
