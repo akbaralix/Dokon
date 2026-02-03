@@ -77,12 +77,9 @@ export default function ProductPage({ id }: { id: string }) {
     <div className="p-dark-theme">
       <div className="p-container">
         <div className="p-main-grid">
-          {/* Rasm qismi */}
           <div className="p-image-wrapper">
             <img src={data.rasm} alt={data.title} className="p-main-img" />
           </div>
-
-          {/* Ma'lumot qismi */}
           <div className="p-details-wrapper">
             <h1 className="p-product-title">{data.title}</h1>
 

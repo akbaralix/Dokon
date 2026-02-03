@@ -55,11 +55,16 @@ function Savat() {
       localStorage.setItem("mycart", JSON.stringify(updatedItems));
     }
   };
-  const daleteItem = (item: Product) => {
+  const deleteItem = (item: Product) => {
     const updatedItems = cartItems.filter(
       (cartItem) => cartItem.id !== item.id,
     );
     setCartItems(updatedItems);
+    if (updatedItems.length === 0) {
+      localStorage.removeItem("mycart");
+    } else {
+      localStorage.setItem("mycart", JSON.stringify(updatedItems));
+    }
   };
 
   const handleCheckout = async () => {
@@ -219,7 +224,7 @@ function Savat() {
                     </div>
                   </div>
                   <div className="dalete-acitons">
-                    <button onClick={() => daleteItem(item)}>
+                    <button onClick={() => deleteItem(item)}>
                       <div>
                         <TbTrash />
                       </div>
