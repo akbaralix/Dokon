@@ -32,7 +32,6 @@ function Home() {
   ];
 
   const [current, setCurrent] = useState<number>(0);
-
   const [favorites, setFavorites] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
@@ -43,13 +42,12 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    // Bazadan mahsulotlarni olish
     const fetchProducts = async () => {
       try {
         const res = await fetch(
           process.env.NEXT_PUBLIC_API_URL + "/api/products",
           {
-            // cache: "force-cache",
+            cache: "force-cache",
           },
         );
 
@@ -283,10 +281,6 @@ function Home() {
           )}
         </div>
       )}
-      {mahsulotlar.filter(
-        (item) =>
-          !search || item.title.toLowerCase().includes(search.toLowerCase()),
-      ).length === 0 && <p>Mahsulotlar topilmadi</p>}
 
       <div className="title-text">
         <h2>Tavsiya qilamiz</h2>

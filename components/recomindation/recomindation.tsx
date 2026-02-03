@@ -94,9 +94,11 @@ function Recomindation() {
                 <img src={item.rasm} alt={item.title} />
                 <div className="product-card__actions">
                   <button
-                    onClick={() =>
-                      toggleFavorite(item, favorites, setFavorites)
-                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleFavorite(item, favorites, setFavorites);
+                    }}
                     style={{ color: isFav ? "red" : "gray" }}
                   >
                     <CiHeart size={24} />

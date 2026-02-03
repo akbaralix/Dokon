@@ -154,6 +154,15 @@
   margin-top: 100px;
   color: white;
 }
+.p-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 25px;
+  font-weight: 600;
+  margin-top: 100px;
+}
 
 /* RESPONSIVE (MOBILE) */
 @media (max-width: 850px) {
