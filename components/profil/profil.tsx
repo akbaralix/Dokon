@@ -132,8 +132,6 @@ const Profil: React.FC = () => {
       </div>
 
       <div className="orders-section">
-        <h3 className="section-title">Buyurtmalarim: {orders.length} ta</h3>
-
         {orders.length === 0 ? (
           <div className="order-continer empty-state">
             <h2>Hozircha buyurtmalar yo'q</h2>
@@ -142,45 +140,46 @@ const Profil: React.FC = () => {
             </a>
           </div>
         ) : (
-          <div className="orders-list">
-            {orders.map((order) => (
-              <div key={order._id} className="order-card shadow-card">
-                <div className="order-header">
-                  <div className="order-id">ID {order._id.slice(-6)}</div>
-                  <div className={`status-badge ${order.status}`}>
-                    {order.status}
-                  </div>
-                </div>
-
-                <div className="order-body">
-                  {order.items.map((item: any, idx: number) => (
-                    <div key={idx} className="order-item">
-                      <span>{item.title}</span>
-                      <span className="order-quantity__prof">
-                        <span>{item.quantity}</span> <p>dona</p>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="order-footer">
-                  <div className="total-info">
-                    <span style={{ fontSize: 20 }}>Jami:</span>
-                    <span className="total-amount">
-                      {(order.totalAmount || 0).toLocaleString()} so'm
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => handleCancelOrder(order._id)}
-                    className="cancel-btn"
-                  >
-                    Bekor qilish
-                  </button>
+          <h3 className="section-title">Buyurtmalarim: {orders.length} ta</h3>
+        )}
+        <div className="orders-list">
+          {orders.map((order) => (
+            <div key={order._id} className="order-card shadow-card">
+              <div className="order-header">
+                <div className="order-id">ID {order._id.slice(-6)}</div>
+                <div className={`status-badge ${order.status}`}>
+                  {order.status}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+
+              <div className="order-body">
+                {order.items.map((item: any, idx: number) => (
+                  <div key={idx} className="order-item">
+                    <span>{item.title}</span>
+                    <span className="order-quantity__prof">
+                      <span>{item.quantity}</span> <p>dona</p>
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="order-footer">
+                <div className="total-info">
+                  <span style={{ fontSize: 20 }}>Jami:</span>
+                  <span className="total-amount">
+                    {(order.totalAmount || 0).toLocaleString()} so'm
+                  </span>
+                </div>
+                <button
+                  onClick={() => handleCancelOrder(order._id)}
+                  className="cancel-btn"
+                >
+                  Bekor qilish
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

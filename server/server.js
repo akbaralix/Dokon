@@ -91,7 +91,8 @@ app.post("/verify", async (req, res) => {
         lastName: info.last_name || "",
         username: info.username || "",
         userId: info.id || "",
-        avatar,
+        avatar: avatar || "",
+        phone: info.phone_number || "",
       },
       { upsert: true, new: true },
     );
