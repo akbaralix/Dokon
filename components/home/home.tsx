@@ -155,7 +155,7 @@ function Home() {
               src="https://static.uzum.uz/static/promo_images/756b6f56-9d2d-414c-a9d3-37d40d1c808b"
               alt="Promo"
             />
-            <span>Onalar va bolalar uchun</span>
+            <span>Onalar va bolalar uchunn</span>
           </div>
         ))}
       </div>
